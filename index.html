@@ -1,0 +1,5726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoSort AI – Intelligent Waste Classification & Resource Recovery | NEXTECH 007 (SIH 2026)</title>
+  <meta name="description" content="AI-powered waste classification, recovery intelligence and circular-economy decision support by Team NEXTECH 007 for Smart India Hackathon (SIH) 2026." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* -------------------------------------------------------------
+       DESIGN SYSTEM & CSS VARIABLES
+       Clean Light Theme: Off-white background, emerald/cyan accents,
+       glassmorphism, subtle shadows, and futuristic eco-tech aesthetic.
+    ------------------------------------------------------------- */
+    :root {
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-translucent: rgba(255, 255, 255, 0.82);
+      --bg-card: #ffffff;
+      --bg-card-hover: #f0fdf4;
+      --bg-subtle: #f1f5f9;
+      --bg-tag: #ecfdf5;
+
+      --primary: #059669;
+      --primary-hover: #047857;
+      --primary-light: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.28);
+      
+      --accent-cyan: #0891b2;
+      --accent-cyan-light: #06b6d4;
+      --accent-cyan-glow: rgba(6, 182, 212, 0.25);
+      
+      --accent-amber: #d97706;
+      --accent-purple: #7c3aed;
+      --accent-blue: #2563eb;
+      --accent-rose: #e11d48;
+
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-light: #64748b;
+      --text-emerald: #047857;
+
+      --border-subtle: rgba(226, 232, 240, 0.9);
+      --border-focus: rgba(16, 185, 129, 0.45);
+      --border-glass: rgba(255, 255, 255, 0.6);
+
+      --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+      --shadow-lg: 0 20px 40px -8px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(16, 185, 129, 0.08);
+      --shadow-glow: 0 0 28px rgba(16, 185, 129, 0.22);
+      
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --radius-full: 9999px;
+
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-heading: 'Space Grotesk', system-ui, sans-serif;
+
+      --transition-base: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* -------------------------------------------------------------
+       GLOBAL RESET & RESETS
+    ------------------------------------------------------------- */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient gradient background blobs */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .ambient-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.55;
+      animation: floatSlow 22s ease-in-out infinite alternate;
+    }
+
+    .blob-1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.16) 0%, rgba(6, 182, 212, 0.05) 70%, transparent 100%);
+      top: -120px;
+      left: -100px;
+    }
+
+    .blob-2 {
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, rgba(16, 185, 129, 0.04) 70%, transparent 100%);
+      top: 35%;
+      right: -150px;
+      animation-delay: -6s;
+    }
+
+    .blob-3 {
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(52, 211, 153, 0.12) 0%, rgba(14, 165, 233, 0.05) 70%, transparent 100%);
+      bottom: -100px;
+      left: 15%;
+      animation-delay: -12s;
+    }
+
+    @keyframes floatSlow {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, 30px) scale(1.08); }
+      100% { transform: translate(-30px, 50px) scale(0.96); }
+    }
+
+    /* Subtle grid line overlay */
+    .bg-grid-pattern {
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(16, 185, 129, 0.08) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* -------------------------------------------------------------
+       TYPOGRAPHY & UTILITIES
+    ------------------------------------------------------------- */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      color: var(--text-main);
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    p {
+      color: var(--text-muted);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition-base);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    .section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 56px auto;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--bg-tag);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
+    }
+
+    .section-badge .dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--primary-light);
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.75); }
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 3.5vw, 2.75rem);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #047857 0%, #059669 40%, #0891b2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-text-alt {
+      background: linear-gradient(135deg, #0891b2 0%, #0284c7 60%, #059669 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Glassmorphism Cards */
+    .glass-card {
+      background: var(--bg-surface-translucent);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition-base);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: var(--transition-base);
+      text-decoration: none;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #047857 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 18px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #10b981 0%, var(--primary) 100%);
+      box-shadow: 0 8px 26px rgba(16, 185, 129, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid rgba(203, 213, 225, 0.9);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary:hover {
+      background: #f8fafc;
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-cyan {
+      background: linear-gradient(135deg, var(--accent-cyan-light) 0%, var(--accent-cyan) 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 18px var(--accent-cyan-glow);
+    }
+
+    .btn-cyan:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(6, 182, 212, 0.35);
+    }
+
+    .btn-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      transition: transform 0.25s ease;
+    }
+
+    .btn:hover .btn-icon {
+      transform: translateX(3px);
+    }
+
+    /* -------------------------------------------------------------
+       NAVBAR
+    ------------------------------------------------------------- */
+    .navbar {
+      position: fixed;
+      top: 16px;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 0 24px;
+      transition: var(--transition-base);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      border-radius: var(--radius-full);
+      padding: 10px 18px 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
+      transition: var(--transition-base);
+    }
+
+    .navbar.scrolled .nav-container {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 12px 36px rgba(15, 23, 42, 0.09);
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #10b981 0%, #0891b2 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-logo-icon::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+    }
+
+    .brand-logo-icon svg {
+      width: 22px;
+      height: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-text-block {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.1;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .brand-name .ai-tag {
+      font-size: 0.68rem;
+      padding: 2px 6px;
+      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      color: #ffffff;
+      border-radius: 6px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .brand-sih-tag {
+      font-size: 0.68rem;
+      color: var(--text-light);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+    }
+
+    .nav-link {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-radius: var(--radius-full);
+      transition: var(--transition-base);
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .nav-link.active {
+      color: var(--primary);
+      font-weight: 600;
+      background: var(--bg-tag);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-btn-demo {
+      padding: 10px 20px;
+      font-size: 0.88rem;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: var(--text-main);
+      transition: var(--transition-base);
+    }
+
+    .mobile-menu-toggle:hover {
+      background: var(--bg-subtle);
+    }
+
+    /* Mobile Drawer */
+    .mobile-drawer {
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+      z-index: 999;
+      transform: translateY(-20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition-base);
+    }
+
+    .mobile-drawer.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      list-style: none;
+    }
+
+    .mobile-nav-link {
+      display: block;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      border-radius: var(--radius-md);
+      transition: var(--transition-base);
+    }
+
+    .mobile-nav-link:hover, .mobile-nav-link.active {
+      background: var(--bg-tag);
+      color: var(--primary);
+    }
+
+    /* -------------------------------------------------------------
+       HERO SECTION
+    ------------------------------------------------------------- */
+    .hero-section {
+      padding-top: 140px;
+      padding-bottom: 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .hero-meta-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .hero-badge-team {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: #ffffff;
+      border: 1px solid rgba(8, 145, 178, 0.25);
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      box-shadow: 0 2px 8px rgba(8, 145, 178, 0.08);
+    }
+
+    .hero-badge-sih {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(6, 182, 212, 0.12) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .hero-title {
+      font-size: clamp(2.75rem, 5vw, 4.25rem);
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.25rem, 2vw, 1.65rem);
+      color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 18px;
+      line-height: 1.35;
+    }
+
+    .hero-support-text {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 580px;
+      margin-bottom: 36px;
+      line-height: 1.65;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .hero-highlights {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .highlight-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .highlight-value {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+    }
+
+    .highlight-label {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    /* -------------------------------------------------------------
+       HERO VISUAL: ANIMATED AI WASTE-SORTING SIMULATION
+    ------------------------------------------------------------- */
+    .hero-visual-card {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(16, 185, 129, 0.1);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .visual-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .system-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--bg-tag);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .fps-badge {
+      font-size: 0.75rem;
+      font-family: monospace;
+      color: var(--text-light);
+      background: var(--bg-subtle);
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    /* Canvas simulation box */
+    .simulation-canvas-container {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      background: radial-gradient(circle at center, #f8fafc 0%, #edf2f7 100%);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid rgba(203, 213, 225, 0.8);
+    }
+
+    #sortingCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .simulation-overlay-hud {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .hud-scanner-badge {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      color: #34d399;
+      font-family: monospace;
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border-left: 3px solid #10b981;
+    }
+
+    .visual-categories-bar {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .cat-pill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 4px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-align: center;
+      transition: var(--transition-base);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .cat-pill.plastic { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
+    .cat-pill.paper { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
+    .cat-pill.metal { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+    .cat-pill.glass { background: #ede9fe; color: #7c3aed; border: 1px solid #ddd6fe; }
+    .cat-pill.organic { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+
+    .cat-pill:hover, .cat-pill.active {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      filter: brightness(0.96);
+    }
+
+    .cat-count {
+      font-family: monospace;
+      font-size: 0.85rem;
+      margin-top: 2px;
+      font-weight: 700;
+    }
+
+    .simulation-controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border-subtle);
+    }
+
+    .sim-hint {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-spawn-waste {
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: var(--transition-base);
+    }
+
+    .btn-spawn-waste:hover {
+      background: #ffffff;
+      color: var(--primary);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* -------------------------------------------------------------
+       PROBLEM SECTION: THE HIDDEN COST OF MIXED WASTE
+    ------------------------------------------------------------- */
+    .problem-section {
+      background: #ffffff;
+      position: relative;
+    }
+
+    .stats-counter-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+
+    .stat-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-base);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      opacity: 0;
+      transition: var(--transition-base);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
+    }
+
+    .stat-icon-wrapper {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 16px auto;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-subtle);
+      color: var(--primary);
+    }
+
+    .stat-card:nth-child(1) .stat-icon-wrapper { background: #ecfdf5; color: #059669; }
+    .stat-card:nth-child(2) .stat-icon-wrapper { background: #fef2f2; color: #dc2626; }
+    .stat-card:nth-child(3) .stat-icon-wrapper { background: #fffbeb; color: #d97706; }
+    .stat-card:nth-child(4) .stat-icon-wrapper { background: #eff6ff; color: #2563eb; }
+
+    .stat-value {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 3vw, 2.5rem);
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .stat-tag {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      background: var(--bg-subtle);
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .consequences-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .consequence-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-base);
+    }
+
+    .consequence-card:hover {
+      border-color: rgba(225, 29, 72, 0.3);
+      box-shadow: 0 16px 32px -8px rgba(225, 29, 72, 0.08);
+      transform: translateY(-4px);
+    }
+
+    .consequence-header {
+      margin-bottom: 16px;
+    }
+
+    .consequence-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #fff1f2;
+      color: #e11d48;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .consequence-title {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .consequence-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .consequence-metric {
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .consequence-metric span:last-child {
+      color: #e11d48;
+      font-weight: 700;
+    }
+
+    /* -------------------------------------------------------------
+       SOLUTION SECTION: FROM WASTE TO RESOURCE (INTERACTIVE PROCESS)
+    ------------------------------------------------------------- */
+    .solution-pipeline-container {
+      position: relative;
+      margin-top: 40px;
+    }
+
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .pipeline-connector-line {
+      position: absolute;
+      top: 50px;
+      left: 5%;
+      right: 5%;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%);
+      z-index: 1;
+      border-radius: 4px;
+      opacity: 0.35;
+    }
+
+    .stage-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px 18px;
+      text-align: center;
+      transition: var(--transition-base);
+      cursor: pointer;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stage-card:hover, .stage-card.active {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 36px rgba(16, 185, 129, 0.15);
+      border-color: var(--primary);
+    }
+
+    .stage-card.active {
+      background: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.35), 0 16px 36px rgba(16, 185, 129, 0.15);
+    }
+
+    .stage-number {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 16px auto;
+      border-radius: 50%;
+      background: #f0fdf4;
+      border: 2px solid #a7f3d0;
+      color: var(--primary);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: var(--transition-base);
+    }
+
+    .stage-card.active .stage-number, .stage-card:hover .stage-number {
+      background: linear-gradient(135deg, #10b981 0%, #0891b2 100%);
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.4);
+    }
+
+    .stage-icon {
+      width: 32px;
+      height: 32px;
+      margin: 0 auto 12px auto;
+      color: var(--accent-cyan);
+    }
+
+    .stage-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .stage-tagline {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Interactive Stage Inspector Panel */
+    .stage-detail-panel {
+      margin-top: 36px;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      box-shadow: var(--shadow-lg);
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 36px;
+      align-items: center;
+      transition: var(--transition-base);
+    }
+
+    .stage-detail-content h3 {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .stage-detail-badge {
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      background: var(--bg-tag);
+      color: var(--primary);
+      border-radius: var(--radius-full);
+      font-weight: 700;
+    }
+
+    .stage-detail-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .stage-detail-specs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .spec-item {
+      background: #ffffff;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .spec-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .spec-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 4px;
+    }
+
+    .stage-detail-visual {
+      background: #f1f5f9;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      border: 1px solid var(--border-subtle);
+      position: relative;
+    }
+
+    .tech-code-box {
+      background: #0f172a;
+      color: #38bdf8;
+      font-family: monospace;
+      font-size: 0.82rem;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      line-height: 1.5;
+      overflow-x: auto;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    /* -------------------------------------------------------------
+       VIDEO SECTION: AI WASTE SORTING IN ACTION
+    ------------------------------------------------------------- */
+    .video-section {
+      background: #ffffff;
+    }
+
+    .video-showcase-wrapper {
+      max-width: 980px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 24px 60px -12px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(16, 185, 129, 0.1);
+      overflow: hidden;
+    }
+
+    .video-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .video-title-tag {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .video-stream-pill {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      background: #fee2e2;
+      color: #ef4444;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .video-stream-pill .rec-dot {
+      width: 6px;
+      height: 6px;
+      background: #ef4444;
+      border-radius: 50%;
+      animation: pulseDot 1.5s infinite;
+    }
+
+    .video-view-mode-tabs {
+      display: flex;
+      background: var(--bg-subtle);
+      padding: 4px;
+      border-radius: var(--radius-full);
+      gap: 4px;
+    }
+
+    .view-mode-btn {
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition-base);
+    }
+
+    .view-mode-btn.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Video player container */
+    .video-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #090d16;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #wasteSortingVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* AI Vision Bounding Box Overlay Mode */
+    .ai-vision-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px;
+      transition: var(--transition-base);
+    }
+
+    .ai-bounding-box {
+      position: absolute;
+      top: 28%;
+      left: 35%;
+      width: 30%;
+      height: 44%;
+      border: 2px solid #10b981;
+      background: rgba(16, 185, 129, 0.08);
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+      animation: boxPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes boxPulse {
+      0%, 100% { border-color: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.35); }
+      50% { border-color: #06b6d4; box-shadow: 0 0 25px rgba(6, 182, 212, 0.5); }
+    }
+
+    .ai-box-tag {
+      position: absolute;
+      top: -28px;
+      left: 0;
+      background: #10b981;
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .ai-crosshairs {
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(to right, rgba(16, 185, 129, 0.15) 1px, transparent 1px) 0 0,
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.15) 1px, transparent 1px) 0 0;
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    /* Video Player Controls Bar */
+    .video-controls-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.85) 100%);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 10;
+      transition: opacity 0.3s ease;
+    }
+
+    .video-progress-wrapper {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .video-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      border-radius: 4px;
+      position: relative;
+      transition: width 0.1s linear;
+    }
+
+    .video-controls-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ffffff;
+    }
+
+    .video-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .video-control-btn {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: var(--transition-base);
+    }
+
+    .video-control-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #34d399;
+    }
+
+    .video-time-display {
+      font-size: 0.8rem;
+      font-family: monospace;
+      color: #cbd5e1;
+    }
+
+    .video-meta-footer {
+      padding: 20px 24px;
+      background: #f8fafc;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .video-meta-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .source-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: #ffffff;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* -------------------------------------------------------------
+       AI DEMO SECTION: CLASSIFICATION PROTOTYPE
+    ------------------------------------------------------------- */
+    .demo-section {
+      background: radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 60%);
+      position: relative;
+    }
+
+    .demo-disclaimer-banner {
+      background: #f0fdf4;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: var(--radius-md);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .disclaimer-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--primary-hover);
+    }
+
+    .disclaimer-badge {
+      padding: 3px 10px;
+      background: var(--primary);
+      color: #ffffff;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .demo-workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* Upload & Preset Column */
+    .demo-input-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .input-card-title {
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+    }
+
+    .input-card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    /* Presets Quick Picker */
+    .presets-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .presets-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .preset-btn {
+      background: #f8fafc;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: var(--transition-base);
+      text-align: center;
+    }
+
+    .preset-btn:hover, .preset-btn.active {
+      background: #f0fdf4;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .preset-btn.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-glow);
+    }
+
+    .preset-icon {
+      font-size: 1.5rem;
+    }
+
+    .preset-name {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .preset-category-tag {
+      font-size: 0.68rem;
+      color: var(--text-light);
+      background: #ffffff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Drag & Drop Area */
+    .dropzone {
+      border: 2px dashed rgba(16, 185, 129, 0.4);
+      background: #f0fdf4;
+      border-radius: var(--radius-lg);
+      padding: 32px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-base);
+      position: relative;
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      background: #ecfdf5;
+      border-color: var(--primary);
+      transform: scale(1.01);
+    }
+
+    .dropzone-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px auto;
+      color: var(--primary);
+    }
+
+    .dropzone-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .dropzone-subtext {
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    /* Actions row */
+    .demo-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    /* Output & Result Column */
+    .demo-output-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .output-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .inference-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: #f1f5f9;
+      color: var(--text-muted);
+    }
+
+    .inference-badge.online {
+      background: #ecfdf5;
+      color: var(--primary);
+    }
+
+    /* Preview Canvas Area */
+    .image-preview-wrapper {
+      position: relative;
+      width: 100%;
+      height: 240px;
+      background: #0f172a;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    #previewImg {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: var(--transition-base);
+    }
+
+    /* Laser scanning effect overlay */
+    .scan-laser-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #34d399, #06b6d4, transparent);
+      box-shadow: 0 0 15px #10b981;
+      top: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .scan-laser-line.scanning {
+      opacity: 1;
+      animation: laserSweep 1.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes laserSweep {
+      0% { top: 4%; }
+      100% { top: 96%; }
+    }
+
+    .scan-hud-box {
+      position: absolute;
+      inset: 15%;
+      border: 1px dashed rgba(52, 211, 153, 0.6);
+      border-radius: 8px;
+      pointer-events: none;
+      display: none;
+    }
+
+    .scan-hud-box.visible {
+      display: block;
+      animation: hudFlicker 1.5s infinite;
+    }
+
+    @keyframes hudFlicker {
+      0%, 100% { border-color: rgba(52, 211, 153, 0.8); }
+      50% { border-color: rgba(6, 182, 212, 0.4); }
+    }
+
+    /* Dynamic Result Display */
+    .result-container {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      flex-grow: 1;
+    }
+
+    .result-primary-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .material-identity {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detected-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .detected-material-name {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+      margin-top: 2px;
+    }
+
+    .confidence-meter-card {
+      background: var(--bg-subtle);
+      border-radius: var(--radius-md);
+      padding: 8px 16px;
+      text-align: right;
+    }
+
+    .confidence-score {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .confidence-label {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    /* Result Metric Chips */
+    .result-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .result-chip {
+      background: #f8fafc;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+    }
+
+    .chip-key {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .chip-val {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip-val.emerald { color: var(--primary); }
+    .chip-val.cyan { color: var(--accent-cyan); }
+    .chip-val.amber { color: var(--accent-amber); }
+
+    /* Recommendation Box */
+    .recommendation-box {
+      background: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%);
+      border: 1px solid #a7f3d0;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+    }
+
+    .rec-box-header {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary-hover);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .rec-box-action {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #064e3b;
+      line-height: 1.45;
+    }
+
+    /* Analyzing state container */
+    .analyzing-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
+      gap: 16px;
+    }
+
+    .ai-spinner {
+      width: 56px;
+      height: 56px;
+      border: 4px solid #e2e8f0;
+      border-top-color: var(--primary);
+      border-right-color: var(--accent-cyan);
+      border-radius: 50%;
+      animation: spin 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .analysis-progress-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .analysis-step-subtext {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      font-family: monospace;
+    }
+
+    /* -------------------------------------------------------------
+       DASHBOARD SECTION: INTERACTIVE WASTE ANALYTICS
+    ------------------------------------------------------------- */
+    .dashboard-section {
+      background: #ffffff;
+    }
+
+    .dashboard-card-wrapper {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .dashboard-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .dash-title-group h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .dash-title-group p {
+      font-size: 0.88rem;
+    }
+
+    .timeframe-tabs {
+      display: flex;
+      background: var(--bg-subtle);
+      padding: 4px;
+      border-radius: var(--radius-full);
+      gap: 4px;
+    }
+
+    .timeframe-btn {
+      padding: 8px 18px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition-base);
+    }
+
+    .timeframe-btn.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    }
+
+    /* KPI Summary Row */
+    .dash-kpis-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 36px;
+    }
+
+    .kpi-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .kpi-value {
+      font-family: var(--font-heading);
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 6px 0 4px 0;
+    }
+
+    .kpi-subtext {
+      font-size: 0.78rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .kpi-subtext.positive { color: var(--primary); }
+
+    /* Chart Layout */
+    .charts-duo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .chart-box {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .chart-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .chart-box-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .chart-canvas-wrapper {
+      position: relative;
+      width: 100%;
+      height: 260px;
+    }
+
+    /* Live Material Scrap Ticker */
+    .scrap-price-ticker-strip {
+      margin-top: 32px;
+      padding: 16px 20px;
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .ticker-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ticker-items-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .ticker-item {
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ticker-item strong {
+      color: var(--primary);
+    }
+
+    /* -------------------------------------------------------------
+       TECHNOLOGY SECTION: ARCHITECTURE & ENGINE CARDS
+    ------------------------------------------------------------- */
+    .tech-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .tech-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 32px 24px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-base);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tech-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      opacity: 0;
+      transition: var(--transition-base);
+    }
+
+    .tech-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .tech-card:hover::before {
+      opacity: 1;
+    }
+
+    .tech-icon-box {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-md);
+      background: #f0fdf4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      margin-bottom: 20px;
+      font-size: 1.6rem;
+      border: 1px solid #d1fae5;
+    }
+
+    .tech-card:nth-child(2) .tech-icon-box { background: #ecfeff; color: #0891b2; border-color: #cffafe; }
+    .tech-card:nth-child(3) .tech-icon-box { background: #eff6ff; color: #2563eb; border-color: #dbeafe; }
+    .tech-card:nth-child(4) .tech-icon-box { background: #fdf4ff; color: #c026d3; border-color: #fae8ff; }
+
+    .tech-title {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+
+    .tech-subtitle {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .tech-card:nth-child(2) .tech-subtitle { color: #0891b2; }
+    .tech-card:nth-child(3) .tech-subtitle { color: #2563eb; }
+    .tech-card:nth-child(4) .tech-subtitle { color: #c026d3; }
+
+    .tech-description {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .tech-specs-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--border-subtle);
+    }
+
+    .tech-pill {
+      font-size: 0.72rem;
+      font-family: monospace;
+      padding: 3px 8px;
+      background: var(--bg-subtle);
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    /* -------------------------------------------------------------
+       FUTURE INTEGRATION: ANIMATED ARCHITECTURE PIPELINE
+    ------------------------------------------------------------- */
+    .future-section {
+      background: #ffffff;
+      position: relative;
+    }
+
+    .future-architecture-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 48px 36px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .future-nodes-flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      align-items: stretch;
+      position: relative;
+      margin: 40px 0 24px 0;
+    }
+
+    .flow-connector-track {
+      position: absolute;
+      top: 50px;
+      left: 8%;
+      right: 8%;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%);
+      z-index: 1;
+      border-radius: 4px;
+      opacity: 0.3;
+    }
+
+    .flow-packet-stream {
+      position: absolute;
+      top: 50px;
+      left: 8%;
+      width: 20px;
+      height: 4px;
+      background: #34d399;
+      box-shadow: 0 0 10px #10b981;
+      border-radius: 4px;
+      z-index: 2;
+      animation: packetTravel 4s linear infinite;
+    }
+
+    @keyframes packetTravel {
+      0% { left: 8%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { left: 88%; opacity: 0; }
+    }
+
+    .future-node {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px 18px;
+      text-align: center;
+      position: relative;
+      z-index: 3;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-base);
+    }
+
+    .future-node:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary);
+    }
+
+    .node-icon-circle {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 16px auto;
+      border-radius: 50%;
+      background: #ecfdf5;
+      border: 2px solid #a7f3d0;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      transition: var(--transition-base);
+    }
+
+    .future-node:hover .node-icon-circle {
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
+    }
+
+    .node-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .node-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+
+    .node-chip {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-full);
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .future-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 36px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .meta-box {
+      background: #ffffff;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .meta-box-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .meta-box-val {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 4px;
+    }
+
+    /* -------------------------------------------------------------
+       HOW IT WORKS SECTION: 4 ANIMATED STEPS
+    ------------------------------------------------------------- */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .step-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 36px 24px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-base);
+      position: relative;
+    }
+
+    .step-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .step-index-badge {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: rgba(16, 185, 129, 0.25);
+      line-height: 1;
+      margin-bottom: 16px;
+      transition: var(--transition-base);
+    }
+
+    .step-card:hover .step-index-badge {
+      color: var(--primary);
+      transform: scale(1.05);
+    }
+
+    .step-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .step-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* -------------------------------------------------------------
+       IMPACT SECTION: ENVIRONMENTAL, ECONOMIC, SOCIAL
+    ------------------------------------------------------------- */
+    .impact-pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .impact-pillar-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 36px 30px;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition-base);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .impact-pillar-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .impact-pillar-card.env:hover { border-color: rgba(16, 185, 129, 0.4); }
+    .impact-pillar-card.econ:hover { border-color: rgba(6, 182, 212, 0.4); }
+    .impact-pillar-card.soc:hover { border-color: rgba(124, 58, 237, 0.4); }
+
+    .pillar-header {
+      margin-bottom: 24px;
+    }
+
+    .pillar-icon-box {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      margin-bottom: 20px;
+    }
+
+    .impact-pillar-card.env .pillar-icon-box { background: #ecfdf5; color: #059669; }
+    .impact-pillar-card.econ .pillar-icon-box { background: #ecfeff; color: #0891b2; }
+    .impact-pillar-card.soc .pillar-icon-box { background: #f5f3ff; color: #7c3aed; }
+
+    .pillar-title {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .pillar-tagline {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .impact-points-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .impact-point-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .point-bullet {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .impact-pillar-card.env .point-bullet { background: #d1fae5; color: #059669; }
+    .impact-pillar-card.econ .point-bullet { background: #cffafe; color: #0891b2; }
+    .impact-pillar-card.soc .point-bullet { background: #ede9fe; color: #7c3aed; }
+
+    .pillar-counter-highlight {
+      background: var(--bg-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pillar-counter-num {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .impact-pillar-card.env .pillar-counter-num { color: #059669; }
+    .impact-pillar-card.econ .pillar-counter-num { color: #0891b2; }
+    .impact-pillar-card.soc .pillar-counter-num { color: #7c3aed; }
+
+    .pillar-counter-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    /* -------------------------------------------------------------
+       ROADMAP SECTION: INTERACTIVE TIMELINE
+    ------------------------------------------------------------- */
+    .roadmap-section {
+      background: #ffffff;
+    }
+
+    .timeline-wrapper {
+      position: relative;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .timeline-spine {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      background: linear-gradient(180deg, #10b981 0%, #06b6d4 50%, #6366f1 100%);
+      transform: translateX(-50%);
+      border-radius: 4px;
+      opacity: 0.35;
+    }
+
+    .timeline-phase-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 40px;
+      position: relative;
+      align-items: center;
+    }
+
+    .timeline-phase-row:nth-child(even) .phase-content {
+      grid-column: 2;
+    }
+
+    .timeline-phase-row:nth-child(even) .phase-spacer {
+      grid-column: 1;
+      order: -1;
+    }
+
+    .phase-node-marker {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid var(--primary);
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+      transition: var(--transition-base);
+    }
+
+    .phase-node-marker::after {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    .timeline-phase-row:hover .phase-node-marker {
+      transform: translate(-50%, -50%) scale(1.2);
+      border-color: #0891b2;
+    }
+
+    .phase-content {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-base);
+    }
+
+    .timeline-phase-row:hover .phase-content {
+      box-shadow: var(--shadow-md);
+      border-color: rgba(16, 185, 129, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .phase-status-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+
+    .status-completed { background: #ecfdf5; color: #059669; }
+    .status-active { background: #ecfeff; color: #0891b2; }
+    .status-progress { background: #fffbeb; color: #d97706; }
+    .status-upcoming { background: #f1f5f9; color: #64748b; }
+
+    .phase-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .phase-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* -------------------------------------------------------------
+       FINAL CTA SECTION
+    ------------------------------------------------------------- */
+    .cta-section {
+      background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #0e7490 100%);
+      color: #ffffff;
+      border-radius: var(--radius-xl);
+      padding: 80px 40px;
+      text-align: center;
+      margin: 40px auto 80px auto;
+      max-width: 1200px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 60px -15px rgba(6, 78, 59, 0.4);
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 30%, rgba(52, 211, 153, 0.25) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.25) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .cta-quote-title {
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      line-height: 1.25;
+      font-weight: 800;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .cta-subtitle {
+      font-size: 1.15rem;
+      color: #d1fae5;
+      margin-bottom: 36px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-btn-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .btn-cta-light {
+      background: #ffffff;
+      color: #064e3b;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-cta-light:hover {
+      background: #f0fdf4;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-cta-outline {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      font-weight: 600;
+      padding: 16px 32px;
+      border-radius: var(--radius-full);
+    }
+
+    .btn-cta-outline:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-3px);
+    }
+
+    /* -------------------------------------------------------------
+       FOOTER
+    ------------------------------------------------------------- */
+    .site-footer {
+      background: #ffffff;
+      border-top: 1px solid var(--border-subtle);
+      padding: 60px 0 36px 0;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand-col p {
+      font-size: 0.9rem;
+      margin-top: 12px;
+      max-width: 320px;
+      line-height: 1.6;
+    }
+
+    .footer-badges-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .footer-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-full);
+      color: var(--text-muted);
+    }
+
+    .footer-col-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-nav-list a {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .footer-nav-list a:hover {
+      color: var(--primary);
+      padding-left: 4px;
+    }
+
+    .footer-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.85rem;
+      color: var(--text-light);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-sys-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sys-dot-live {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE BREAKPOINTS
+    ------------------------------------------------------------- */
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+      .stats-counter-grid { grid-template-columns: repeat(2, 1fr); }
+      .consequences-grid { grid-template-columns: repeat(2, 1fr); }
+      .pipeline-grid { grid-template-columns: repeat(3, 1fr); }
+      .pipeline-connector-line { display: none; }
+      .stage-detail-panel { grid-template-columns: 1fr; }
+      .demo-workspace-grid { grid-template-columns: 1fr; }
+      .dash-kpis-grid { grid-template-columns: repeat(2, 1fr); }
+      .charts-duo-grid { grid-template-columns: 1fr; }
+      .tech-cards-grid { grid-template-columns: repeat(2, 1fr); }
+      .future-nodes-flow { grid-template-columns: repeat(2, 1fr); }
+      .flow-connector-track, .flow-packet-stream { display: none; }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+      .impact-pillars-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-btn-demo { display: none; }
+      .mobile-menu-toggle { display: flex; }
+      .mobile-drawer { display: block; }
+      
+      .hero-highlights { grid-template-columns: 1fr; gap: 14px; }
+      .stats-counter-grid { grid-template-columns: 1fr; }
+      .consequences-grid { grid-template-columns: 1fr; }
+      .pipeline-grid { grid-template-columns: 1fr; }
+      .presets-grid { grid-template-columns: repeat(2, 1fr); }
+      .dash-kpis-grid { grid-template-columns: 1fr; }
+      .tech-cards-grid { grid-template-columns: 1fr; }
+      .future-nodes-flow { grid-template-columns: 1fr; }
+      .future-meta-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      
+      .timeline-spine { left: 24px; }
+      .timeline-phase-row { grid-template-columns: 1fr; gap: 0; padding-left: 56px; }
+      .timeline-phase-row:nth-child(even) .phase-content { grid-column: 1; }
+      .phase-node-marker { left: 24px; }
+      .phase-spacer { display: none; }
+
+      .team-grid { grid-template-columns: 1fr; }
+      .mentors-grid { grid-template-columns: 1fr; }
+
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    /* -------------------------------------------------------------
+       TEAM & MENTORS SECTION STYLES
+    ------------------------------------------------------------- */
+    .team-section {
+      background: linear-gradient(180deg, transparent 0%, rgba(241, 245, 249, 0.5) 100%);
+      position: relative;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-bottom: 48px;
+    }
+
+    .team-member-card {
+      background: var(--bg-surface-translucent);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition-base);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .team-member-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(16, 185, 129, 0.4);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .team-member-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent-cyan));
+      opacity: 0;
+      transition: var(--transition-base);
+    }
+
+    .team-member-card:hover::before {
+      opacity: 1;
+    }
+
+    .member-avatar-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .member-photo-frame {
+      width: 72px;
+      height: 72px;
+      min-width: 72px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2.5px solid var(--primary-light);
+      box-shadow: 0 4px 14px var(--primary-glow);
+      background: #e2e8f0;
+      position: relative;
+    }
+
+    .member-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      display: block;
+    }
+
+    .member-photo-gomathi {
+      object-position: center 25% !important;
+    }
+
+    .member-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .member-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .member-role {
+      display: inline-block;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--bg-tag);
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      margin-bottom: 4px;
+    }
+
+    .member-dept {
+      display: block;
+      font-size: 0.76rem;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    .member-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    /* Mentors Container */
+    .mentors-wrapper {
+      margin-top: 20px;
+      padding-top: 48px;
+      border-top: 1px dashed rgba(16, 185, 129, 0.25);
+    }
+
+    .mentors-section-title {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 32px;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .mentors-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .mentor-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 250, 0.85) 100%);
+      border: 1.5px solid rgba(8, 145, 178, 0.28);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      transition: var(--transition-base);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mentor-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px -8px rgba(8, 145, 178, 0.2);
+      border-color: var(--accent-cyan);
+    }
+
+    .mentor-photo-frame {
+      width: 84px;
+      height: 84px;
+      min-width: 84px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--accent-cyan);
+      box-shadow: 0 6px 18px var(--accent-cyan-glow);
+      background: #e2e8f0;
+      position: relative;
+    }
+
+    .mentor-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 15%;
+      display: block;
+    }
+
+    .mentor-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .mentor-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.12);
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      margin-bottom: 8px;
+    }
+
+    .mentor-name {
+      font-size: 1.22rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .mentor-designation {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .mentor-institution {
+      font-size: 0.82rem;
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient glowing blobs -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
+  </div>
+  <div class="bg-grid-pattern" aria-hidden="true"></div>
+
+  <!-- -------------------------------------------------------------
+       NAVBAR
+  ------------------------------------------------------------- -->
+  <nav class="navbar" id="mainNavbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-brand" aria-label="EcoSort AI Home">
+        <div class="brand-logo-icon">
+          <!-- Recycling leaf icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/>
+            <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/>
+            <path d="m14 16-3 3 3 3"/>
+            <path d="M8.294 4.542a1.78 1.78 0 0 1 1.55-.882h4.312a1.83 1.83 0 0 1 1.57.882l3.954 6.84"/>
+            <path d="m9.5 8-3-3 3-3"/>
+          </svg>
+        </div>
+        <div class="brand-text-block">
+          <div class="brand-name">
+            EcoSort <span class="ai-tag">AI</span>
+          </div>
+          <span class="brand-sih-tag">NEXTECH 007 • SIH 2026</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#problem" class="nav-link">Problem</a></li>
+        <li><a href="#solution" class="nav-link">Solution</a></li>
+        <li><a href="#video-demo" class="nav-link">Video Demo</a></li>
+        <li><a href="#ai-demo" class="nav-link">AI Demo</a></li>
+        <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+        <li><a href="#technology" class="nav-link">Technology</a></li>
+        <li><a href="#impact" class="nav-link">Impact</a></li>
+        <li><a href="#team" class="nav-link">Team</a></li>
+      </ul>
+
+      <!-- Right Action Button -->
+      <div class="nav-actions">
+        <a href="#ai-demo" class="btn btn-primary nav-btn-demo">
+          <span>Launch Demo</span>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <ul class="mobile-nav-links">
+      <li><a href="#home" class="mobile-nav-link active">Home</a></li>
+      <li><a href="#problem" class="mobile-nav-link">Problem</a></li>
+      <li><a href="#solution" class="mobile-nav-link">Solution</a></li>
+      <li><a href="#video-demo" class="mobile-nav-link">Video Demo</a></li>
+      <li><a href="#ai-demo" class="mobile-nav-link">AI Demo</a></li>
+      <li><a href="#dashboard" class="mobile-nav-link">Dashboard</a></li>
+      <li><a href="#technology" class="mobile-nav-link">Technology</a></li>
+      <li><a href="#future" class="mobile-nav-link">Future Integration</a></li>
+      <li><a href="#impact" class="mobile-nav-link">Impact</a></li>
+      <li><a href="#roadmap" class="mobile-nav-link">Roadmap</a></li>
+      <li><a href="#team" class="mobile-nav-link">Team & Mentors</a></li>
+    </ul>
+    <div style="margin-top: 18px;">
+      <a href="#ai-demo" class="btn btn-primary" style="width: 100%;">Launch AI Demo</a>
+    </div>
+  </div>
+
+  <!-- -------------------------------------------------------------
+       HERO SECTION
+  ------------------------------------------------------------- -->
+  <section class="section hero-section" id="home">
+    <div class="container">
+      <div class="hero-grid">
+        
+        <!-- Hero Text Content -->
+        <div class="hero-content-col">
+          <div class="hero-meta-badges">
+            <span class="hero-badge-team">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+              </svg>
+              NEXTECH 007
+            </span>
+          </div>
+
+          <h1 class="hero-title">
+            <span class="gradient-text">EcoSort AI</span>
+          </h1>
+
+          <h2 class="hero-subtitle">
+            Turning Waste into Resources with Artificial Intelligence
+          </h2>
+
+          <p class="hero-support-text">
+            AI-powered waste classification, recovery intelligence and circular-economy decision support. Combining high-speed deep learning inference with real-time commodity scrap indexing to divert urban waste from landfills.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="#solution" class="btn btn-secondary">
+              <span>Explore Solution</span>
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+              </svg>
+            </a>
+            <a href="#ai-demo" class="btn btn-primary">
+              <span>Launch AI Demo</span>
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Hero Quick Metrics -->
+          <div class="hero-highlights">
+            <div class="highlight-item">
+              <div class="highlight-value">95.8%</div>
+              <div class="highlight-label">Inference Accuracy</div>
+            </div>
+            <div class="highlight-item">
+              <div class="highlight-value">&lt;45<span style="font-size: 1rem;">ms</span></div>
+              <div class="highlight-label">Edge Classification</div>
+            </div>
+            <div class="highlight-item">
+              <div class="highlight-value">5<span style="font-size: 1rem;"> Stream</span></div>
+              <div class="highlight-label">Circular Segregation</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual: Animated AI Waste-Sorting Simulation Canvas -->
+        <div class="hero-visual-col">
+          <div class="hero-visual-card">
+            <div class="visual-card-header">
+              <div class="system-status-indicator">
+                <span class="dot"></span>
+                <span>AI Optical Sorter: ONLINE</span>
+              </div>
+              <div class="fps-badge" id="heroFpsDisplay">60 FPS • MobileNetV2</div>
+            </div>
+
+            <!-- Simulation Canvas -->
+            <div class="simulation-canvas-container" id="canvasContainer">
+              <canvas id="sortingCanvas"></canvas>
+              <div class="simulation-overlay-hud">
+                <div class="hud-scanner-badge" id="hudScannerStatus">
+                  [CONVEYOR: ACTIVE] [SCANNER: SYNCHRONIZED]
+                </div>
+              </div>
+            </div>
+
+            <!-- Category Bins with Dynamic Counters -->
+            <div class="visual-categories-bar">
+              <div class="cat-pill plastic active" onclick="triggerManualSort('Plastic')">
+                <span>Plastic</span>
+                <span class="cat-count" id="countPlastic">142</span>
+              </div>
+              <div class="cat-pill paper" onclick="triggerManualSort('Paper')">
+                <span>Paper</span>
+                <span class="cat-count" id="countPaper">98</span>
+              </div>
+              <div class="cat-pill metal" onclick="triggerManualSort('Metal')">
+                <span>Metal</span>
+                <span class="cat-count" id="countMetal">64</span>
+              </div>
+              <div class="cat-pill glass" onclick="triggerManualSort('Glass')">
+                <span>Glass</span>
+                <span class="cat-count" id="countGlass">39</span>
+              </div>
+              <div class="cat-pill organic" onclick="triggerManualSort('Organic')">
+                <span>Organic</span>
+                <span class="cat-count" id="countOrganic">185</span>
+              </div>
+            </div>
+
+            <div class="simulation-controls-row">
+              <span class="sim-hint">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                Items scanned & diverted automatically
+              </span>
+              <button class="btn-spawn-waste" onclick="spawnWasteItem()">
+                + Spawn Waste Item
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       PROBLEM SECTION: THE HIDDEN COST OF MIXED WASTE
+  ------------------------------------------------------------- -->
+  <section class="section problem-section" id="problem">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">
+          <span class="dot"></span>
+          National Challenge
+        </span>
+        <h2 class="section-title">The Hidden Cost of Mixed Waste</h2>
+        <p class="section-subtitle">
+          Unsegregated municipal solid waste clogs urban landfills, forfeits billions in recyclable secondary materials, and exposes manual sanitization workers to hazardous conditions.
+        </p>
+      </div>
+
+      <!-- 4 Animated Statistics Counters -->
+      <div class="stats-counter-grid">
+        <div class="stat-card">
+          <div class="stat-icon-wrapper">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </div>
+          <div class="stat-value" data-target="62" data-suffix="M+">0</div>
+          <div class="stat-label">Tonnes Waste Generated Annually</div>
+          <span class="stat-tag">CPCB Annual Report</span>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+          <div class="stat-value" data-target="85" data-suffix="%">0</div>
+          <div class="stat-label">Unsegregated at Source</div>
+          <span class="stat-tag">Zero Pre-sorting</span>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <div class="stat-value" data-prefix="<" data-target="25" data-suffix="%">0</div>
+          <div class="stat-label">Scientifically Processed</div>
+          <span class="stat-tag">75% Dumped in Landfills</span>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <div class="stat-value" data-prefix="₹" data-target="14000" data-suffix="+ Cr">0</div>
+          <div class="stat-label">Resource Value Lost Yearly</div>
+          <span class="stat-tag">Potential Circular Wealth</span>
+        </div>
+      </div>
+
+      <!-- 4 Visual Consequence Cards -->
+      <div class="consequences-grid">
+        <div class="consequence-card">
+          <div class="consequence-header">
+            <span class="consequence-badge">Environmental Impact</span>
+            <h3 class="consequence-title">Landfill Methane Fires</h3>
+            <p class="consequence-desc">
+              Organic matter suffocated beneath plastics decomposes anaerobically, generating explosive methane gas clouds that ignite toxic fires across dumpsites like Ghazipur and Deonar.
+            </p>
+          </div>
+          <div class="consequence-metric">
+            <span>GHG Multiplier</span>
+            <span>28x worse than CO2</span>
+          </div>
+        </div>
+
+        <div class="consequence-card">
+          <div class="consequence-header">
+            <span class="consequence-badge">Economic Loss</span>
+            <h3 class="consequence-title">Resource Degradation</h3>
+            <p class="consequence-desc">
+              High-value polymers, cardboard fibers, and non-ferrous metals become contaminated by putrescible food waste, degrading their mechanical recycling index and market value to zero.
+            </p>
+          </div>
+          <div class="consequence-metric">
+            <span>Material Downcycling</span>
+            <span>-78% Scrap Value</span>
+          </div>
+        </div>
+
+        <div class="consequence-card">
+          <div class="consequence-header">
+            <span class="consequence-badge">Social Hazard</span>
+            <h3 class="consequence-title">Sanitation Vulnerability</h3>
+            <p class="consequence-desc">
+              Over 1.5 million informal waste pickers sift unsegregated heaps manually without protective gear, facing chronic respiratory disease, glass punctures, and biochemical toxicity.
+            </p>
+          </div>
+          <div class="consequence-metric">
+            <span>Manual Scavenging Risk</span>
+            <span>Extreme Hazard Level</span>
+          </div>
+        </div>
+
+        <div class="consequence-card">
+          <div class="consequence-header">
+            <span class="consequence-badge">Ecological Toxicity</span>
+            <h3 class="consequence-title">Groundwater Leachate</h3>
+            <p class="consequence-desc">
+              Heavy metals from discarded electronics and acidic food runoff form black leachate liquid that percolates into underground aquifers, poisoning surrounding agricultural soils.
+            </p>
+          </div>
+          <div class="consequence-metric">
+            <span>Aquifer Contamination</span>
+            <span>BOD > 25,000 mg/L</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       SOLUTION SECTION: FROM WASTE TO RESOURCE (INTERACTIVE PROCESS)
+  ------------------------------------------------------------- */
+  -->
+  <section class="section solution-section" id="solution">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">
+          <span class="dot"></span>
+          Autonomous Pipeline
+        </span>
+        <h2 class="section-title">From Waste to Resource</h2>
+        <p class="section-subtitle">
+          An end-to-end intelligent pipeline that transforms random municipal discards into graded, monetizable circular commodities in under 50 milliseconds.
+        </p>
+      </div>
+
+      <!-- 6-Stage Interactive Process -->
+      <div class="solution-pipeline-container">
+        <div class="pipeline-connector-line"></div>
+
+        <div class="pipeline-grid">
+          
+          <!-- Stage 1 -->
+          <div class="stage-card active" onclick="activateStage(1)">
+            <div class="stage-number">01</div>
+            <div class="stage-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+              </svg>
+            </div>
+            <h3 class="stage-title">Waste Image</h3>
+            <p class="stage-tagline">High-res optical sensor captures feed</p>
+          </div>
+
+          <!-- Stage 2 -->
+          <div class="stage-card" onclick="activateStage(2)">
+            <div class="stage-number">02</div>
+            <div class="stage-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </div>
+            <h3 class="stage-title">AI Vision</h3>
+            <p class="stage-tagline">Feature extraction & edge segmentation</p>
+          </div>
+
+          <!-- Stage 3 -->
+          <div class="stage-card" onclick="activateStage(3)">
+            <div class="stage-number">03</div>
+            <div class="stage-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <h3 class="stage-title">Material Classification</h3>
+            <p class="stage-tagline">MobileNetV2 deep neural classification</p>
+          </div>
+
+          <!-- Stage 4 -->
+          <div class="stage-card" onclick="activateStage(4)">
+            <div class="stage-number">04</div>
+            <div class="stage-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+            <h3 class="stage-title">Recyclability Assessment</h3>
+            <p class="stage-tagline">Purity grade & contamination evaluation</p>
+          </div>
+
+          <!-- Stage 5 -->
+          <div class="stage-card" onclick="activateStage(5)">
+            <div class="stage-number">05</div>
+            <div class="stage-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+            <h3 class="stage-title">Recovery Value Estimation</h3>
+            <p class="stage-tagline">Real-time commodity scrap pricing (₹/kg)</p>
+          </div>
+
+          <!-- Stage 6 -->
+          <div class="stage-card" onclick="activateStage(6)">
+            <div class="stage-number">06</div>
+            <div class="stage-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+              </svg>
+            </div>
+            <h3 class="stage-title">Recycling Recommendation</h3>
+            <p class="stage-tagline">Actionable circular-supply route</p>
+          </div>
+
+        </div>
+
+        <!-- Interactive Stage Inspector Panel -->
+        <div class="stage-detail-panel" id="stageDetailPanel">
+          <div class="stage-detail-content">
+            <h3 id="panelStageTitle">
+              <span>01. Waste Image Capture</span>
+              <span class="stage-detail-badge" id="panelStageBadge">Sensor Ingestion</span>
+            </h3>
+            <p class="stage-detail-desc" id="panelStageDesc">
+              A high-framerate optical camera with dynamic illumination captures overhead waste streams moving across chutes or conveyor belts. Auto-exposure compensation normalizes glare, shadows, and soiled backgrounds.
+            </p>
+            <div class="stage-detail-specs">
+              <div class="spec-item">
+                <div class="spec-title">Hardware Feed</div>
+                <div class="spec-value" id="spec1Val">1080p @ 60 FPS / OV2640</div>
+              </div>
+              <div class="spec-item">
+                <div class="spec-title">Latency Overhead</div>
+                <div class="spec-value" id="spec2Val">&lt; 8.2 ms Frame Ingest</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stage-detail-visual">
+            <div class="tech-code-box" id="panelCodeBox">
+# OpenCV Image Preprocessing Pipeline
+import cv2, numpy as np
+
+frame = camera.capture_rgb()
+resized = cv2.resize(frame, (224, 224))
+normalized = cv2.normalize(resized, None, 0, 1, cv2.NORM_MINMAX)
+tensor = np.expand_dims(normalized, axis=0)
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       VIDEO SECTION: AI WASTE SORTING IN ACTION
+  ------------------------------------------------------------- -->
+  <section class="section video-section" id="video-demo">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">
+          <span class="dot"></span>
+          Live Demonstration
+        </span>
+        <h2 class="section-title">See AI-Powered Waste Sorting in Action</h2>
+        <p class="section-subtitle">
+          Watch our computer vision model detect, classify, and track mixed recyclables in real-time with sub-50ms inference.
+        </p>
+      </div>
+
+      <div class="video-showcase-wrapper">
+        <!-- Top Toolbar -->
+        <div class="video-top-bar">
+          <div class="video-title-tag">
+            <span class="video-stream-pill">
+              <span class="rec-dot"></span>
+              LIVE DEMO
+            </span>
+            <span>EcoSort AI Vision Pipeline • Benchmark Stream</span>
+          </div>
+
+          <div class="video-view-mode-tabs">
+            <button class="view-mode-btn active" id="btnModeVision" onclick="toggleVideoMode('vision')">AI HUD Overlays</button>
+            <button class="view-mode-btn" id="btnModeRaw" onclick="toggleVideoMode('raw')">Clean Feed</button>
+          </div>
+        </div>
+
+        <!-- Video Player Frame -->
+        <div class="video-container" id="videoContainer">
+          <!-- Playable HTML5 Video with reliable fallback synthetic stream -->
+          <video id="wasteSortingVideo" loop playsinline preload="metadata">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-garbage-falling-from-a-sorting-truck-42416-large.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+          </video>
+
+          <!-- AI Vision HUD Overlay (Toggleable) -->
+          <div class="ai-vision-overlay" id="videoVisionOverlay">
+            <div class="ai-crosshairs"></div>
+            
+            <!-- Real-time Bounding Box Simulation -->
+            <div class="ai-bounding-box" id="videoBBox">
+              <div class="ai-box-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <circle cx="12" cy="12" r="10"></circle>
+                </svg>
+                <span>PET Bottle #1 • 97.4%</span>
+              </div>
+            </div>
+
+            <!-- Telemetry Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
+              <div style="background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); padding: 8px 14px; border-radius: 8px; color: #34d399; font-family: monospace; font-size: 0.78rem;">
+                <div>TENSOR: [1, 224, 224, 3]</div>
+                <div>INFERENCE: 38.6ms | EDGE TPU</div>
+                <div>RECOVERY VALUE: ₹12.50/kg</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Video Controls Overlay -->
+          <div class="video-controls-bar">
+            <!-- Progress scrubber -->
+            <div class="video-progress-wrapper" id="videoProgressWrapper">
+              <div class="video-progress-bar" id="videoProgressBar"></div>
+            </div>
+
+            <div class="video-controls-bottom">
+              <div class="video-btn-group">
+                <button class="video-control-btn" id="videoPlayBtn" title="Play / Pause">
+                  <svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  <svg id="pauseIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                    <rect x="6" y="4" width="4" height="16"></rect>
+                    <rect x="14" y="4" width="4" height="16"></rect>
+                  </svg>
+                </button>
+
+                <button class="video-control-btn" id="videoMuteBtn" title="Mute / Unmute">
+                  <svg id="soundOnIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                  </svg>
+                  <svg id="soundMuteIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <line x1="23" y1="9" x2="17" y2="15"></line>
+                    <line x1="17" y1="9" x2="23" y2="15"></line>
+                  </svg>
+                </button>
+
+                <div class="video-time-display">
+                  <span id="videoCurrentTime">00:00</span> / <span id="videoDuration">00:15</span>
+                </div>
+              </div>
+
+              <div class="video-btn-group">
+                <button class="video-control-btn" id="videoFullscreenBtn" title="Fullscreen">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video Footer Details -->
+        <div class="video-meta-footer">
+          <div class="video-meta-info">
+            <span class="source-badge">Dataset: TrashNet + Custom Indian Urban Municipal Feed</span>
+            <span class="source-badge">Model: MobileNetV2-Quantized</span>
+          </div>
+          <div style="font-size: 0.85rem; color: var(--text-light); font-weight: 500;">
+            Smart Conveyor Actuator Response: &lt; 200ms
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       AI DEMO SECTION: CLASSIFICATION PROTOTYPE
+  ------------------------------------------------------------- -->
+  <section class="section demo-section" id="ai-demo">
+    <div class="container">
+      
+      <div class="section-header">
+        <span class="section-badge">
+          <span class="dot"></span>
+          Interactive Experience
+        </span>
+        <h2 class="section-title">AI Waste Classification Demo</h2>
+        <p class="section-subtitle">
+          Test our computer vision classification engine directly in your browser. Upload any waste photograph or choose one of our verified benchmark presets.
+        </p>
+      </div>
+
+      <!-- Disclaimer Banner -->
+      <div class="demo-disclaimer-banner">
+        <div class="disclaimer-left">
+          <span class="disclaimer-badge">Prototype Simulation</span>
+          <span>Client-side inference simulation emulating trained MobileNetV2 feature embeddings.</span>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-light); font-weight: 600;">
+          Hardware Target: ESP32-CAM / Raspberry Pi 4 / Edge TPU
+        </div>
+      </div>
+
+      <!-- Workspace 2-Column Grid -->
+      <div class="demo-workspace-grid">
+        
+        <!-- Left: Upload & Presets Column -->
+        <div class="demo-input-card">
+          <h3 class="input-card-title">1. Select or Upload Image</h3>
+          <p class="input-card-desc">
+            Choose a standard waste benchmark sample or drop your own image from your computer to inspect.
+          </p>
+
+          <!-- Quick Test Presets -->
+          <div class="presets-label">
+            <span>Quick Test Presets (1-Click)</span>
+            <span style="font-size: 0.72rem; color: var(--primary);">Instant Load</span>
+          </div>
+
+          <div class="presets-grid">
+            <!-- Preset 1: Plastic Bottle -->
+            <button class="preset-btn active" onclick="loadPreset('plastic')">
+              <span class="preset-icon">🍾</span>
+              <span class="preset-name">Plastic Bottle</span>
+              <span class="preset-category-tag">PET #1</span>
+            </button>
+
+            <!-- Preset 2: Aluminium Can -->
+            <button class="preset-btn" onclick="loadPreset('can')">
+              <span class="preset-icon">🥫</span>
+              <span class="preset-name">Aluminium Can</span>
+              <span class="preset-category-tag">Metal</span>
+            </button>
+
+            <!-- Preset 3: Banana Peel / Organic -->
+            <button class="preset-btn" onclick="loadPreset('organic')">
+              <span class="preset-icon">🍌</span>
+              <span class="preset-name">Banana Peel</span>
+              <span class="preset-category-tag">Organic</span>
+            </button>
+
+            <!-- Preset 4: Cardboard Box -->
+            <button class="preset-btn" onclick="loadPreset('cardboard')">
+              <span class="preset-icon">📦</span>
+              <span class="preset-name">Cardboard Box</span>
+              <span class="preset-category-tag">Paper</span>
+            </button>
+
+            <!-- Preset 5: Glass Jar -->
+            <button class="preset-btn" onclick="loadPreset('glass')">
+              <span class="preset-icon">🫙</span>
+              <span class="preset-name">Glass Jar</span>
+              <span class="preset-category-tag">Glass</span>
+            </button>
+
+            <!-- Preset 6: E-Waste Cable -->
+            <button class="preset-btn" onclick="loadPreset('ewaste')">
+              <span class="preset-icon">🔌</span>
+              <span class="preset-name">E-Waste Cable</span>
+              <span class="preset-category-tag">E-Waste</span>
+            </button>
+          </div>
+
+          <!-- Drag and Drop Dropzone -->
+          <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+            <input type="file" id="fileInput" accept="image/*">
+            <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <div class="dropzone-text">Click to upload or drag & drop</div>
+            <div class="dropzone-subtext">Supports JPG, PNG, WEBP (Max 15MB)</div>
+          </div>
+
+          <!-- Actions -->
+          <div class="demo-actions-row">
+            <button class="btn btn-primary" id="btnAnalyze" onclick="runAIAnalysis()" style="flex: 1;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Analyze Waste</span>
+            </button>
+            <button class="btn btn-secondary" onclick="resetDemo()" title="Reset Demo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                <path d="M3 3v5h5"></path>
+              </svg>
+              <span>Reset</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Right: AI Inference Preview & Results Column -->
+        <div class="demo-output-card">
+          <div class="output-card-header">
+            <h3 style="font-size: 1.25rem;">2. Prototype Result</h3>
+            <span class="inference-badge online" id="statusBadge">
+              <span class="dot" style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></span>
+              MobileNetV2 Ready
+            </span>
+          </div>
+
+          <!-- Image Preview with scanning laser effect -->
+          <div class="image-preview-wrapper" id="previewWrapper">
+            <img id="previewImg" src="" alt="Waste Object Preview" />
+            <div class="scan-laser-line" id="laserLine"></div>
+            <div class="scan-hud-box" id="hudBox"></div>
+          </div>
+
+          <!-- Analyzing Progress State (shown during inference) -->
+          <div class="analyzing-state" id="analyzingState">
+            <div class="ai-spinner"></div>
+            <div class="analysis-progress-text" id="analysisStepText">Extracting RGB Tensor Features...</div>
+            <div class="analysis-step-subtext" id="analysisSubText">[Layer: Conv2D_64 • Inverted Residual Block]</div>
+          </div>
+
+          <!-- Classification Result Output Card -->
+          <div class="result-container" id="resultContainer">
+            
+            <div class="result-primary-row">
+              <div class="material-identity">
+                <span class="detected-label">Detected Material</span>
+                <span class="detected-material-name" id="resMaterial">Plastic Water Bottle (PET #1)</span>
+              </div>
+              <div class="confidence-meter-card">
+                <div class="confidence-score" id="resConfidence">96.4%</div>
+                <div class="confidence-label">Confidence Score</div>
+              </div>
+            </div>
+
+            <!-- Key Metric Chips -->
+            <div class="result-metrics-grid">
+              <div class="result-chip">
+                <div class="chip-key">Recyclability</div>
+                <div class="chip-val emerald" id="resRecyclability">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  High (Grade A)
+                </div>
+              </div>
+
+              <div class="result-chip">
+                <div class="chip-key">Estimated Recovery Value</div>
+                <div class="chip-val cyan" id="resRecoveryVal">
+                  ₹8 - ₹12 / kg
+                </div>
+              </div>
+
+              <div class="result-chip">
+                <div class="chip-key">Material Stream</div>
+                <div class="chip-val" id="resCategory">
+                  Dry Recyclable / Rigid
+                </div>
+              </div>
+
+              <div class="result-chip">
+                <div class="chip-key">Carbon Offset</div>
+                <div class="chip-val emerald" id="resCarbon">
+                  1.42 kg CO2e / kg
+                </div>
+              </div>
+            </div>
+
+            <!-- Recommendation Box -->
+            <div class="recommendation-box">
+              <div class="rec-box-header">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span>Recommended Action</span>
+              </div>
+              <div class="rec-box-action" id="resAction">
+                Send to clean PET shredder stream. Suitable for bottle-to-bottle pelletization and polyester spun-yarn textile production.
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       DASHBOARD SECTION: INTERACTIVE WASTE ANALYTICS
+  ------------------------------------------------------------- -->
+  <section class="section dashboard-section" id="dashboard">
+    <div class="container">
+      
+      <div class="section-header">
+        <span class="section-badge">
+          <span class="dot"></span>
+          Facility Intelligence
+        </span>
+        <h2 class="section-title">Waste Analytics & Recovery Dashboard</h2>
+        <p class="section-subtitle">
+          Real-time circular economy telemetry across urban sorting stations, monitoring daily throughput, material purity, and avoided landfill tipping fees.
+        </p>
+      </div>
+
+      <div class="dashboard-card-wrapper">
+        
+        <!-- Header with Timeframe Filter -->
+        <div class="dashboard-header-row">
+          <div class="dash-title-group">
+            <h3>Municipal Sorting Station #07 (Metro East Hub)</h3>
+            <p>Live IoT telemetry from 14 optical sorters and pneumatic chutes.</p>
+          </div>
+
+          <div class="timeframe-tabs">
+            <button class="timeframe-btn active" onclick="switchDashboardTimeframe('today')">Today</button>
+            <button class="timeframe-btn" onclick="switchDashboardTimeframe('week')">This Week</button>
+            <button class="timeframe-btn" onclick="switchDashboardTimeframe('month')">This Month</button>
+            <button class="timeframe-btn" onclick="switchDashboardTimeframe('all')">All Time</button>
+          </div>
+        </div>
+
+        <!-- KPI 4 Cards -->
+        <div class="dash-kpis-grid">
+          <div class="kpi-card">
+            <div class="kpi-title">Total Waste Detected</div>
+            <div class="kpi-value" id="kpiTotal">18,450 <span style="font-size: 1rem; font-weight: 600;">kg</span></div>
+            <div class="kpi-subtext positive">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              <span>+14.2% vs yesterday</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-title">Recyclable Percentage</div>
+            <div class="kpi-value" id="kpiRecyclable">84.8%</div>
+            <div class="kpi-subtext positive">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              <span>Target: &gt; 80% Achieved</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-title">Estimated Recovery Value</div>
+            <div class="kpi-value" id="kpiValue">₹2,48,500</div>
+            <div class="kpi-subtext positive">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              <span>Monetized Recyclables</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-title">Landfill Reduction</div>
+            <div class="kpi-value" id="kpiLandfill">79.4%</div>
+            <div class="kpi-subtext positive">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              <span>14.6 Tonnes Diverted</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 Interactive Charts Canvas -->
+        <div class="charts-duo-grid">
+          
+          <!-- Chart 1: Material Category Breakdown Donut -->
+          <div class="chart-box">
+            <div class="chart-box-header">
+              <h4 class="chart-box-title">Material Category Breakdown</h4>
+              <span style="font-size: 0.78rem; color: var(--text-light); font-weight: 600;">5 Sorted Streams</span>
+            </div>
+            <div class="chart-canvas-wrapper">
+              <canvas id="categoryDonutChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 2: Hourly Sorting Throughput -->
+          <div class="chart-box">
+            <div class="chart-box-header">
+              <h4 class="chart-box-title">Hourly Waste Throughput (kg)</h4>
+              <span style="font-size: 0.78rem; color: var(--text-light); font-weight: 600;">Peak Shift: 11:00 AM</span>
+            </div>
+            <div class="chart-canvas-wrapper">
+              <canvas id="throughputBarChart"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Live Scrap Index Ticker -->
+        <div class="scrap-price-ticker-strip">
+          <div class="ticker-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            <span>Live Recyclable Scrap Market Indices (India Benchmark):</span>
+          </div>
+
+          <div class="ticker-items-group">
+            <div class="ticker-item">PET Plastic: <strong>₹14.50/kg</strong></div>
+            <div class="ticker-item">Aluminium Cans: <strong>₹112.00/kg</strong></div>
+            <div class="ticker-item">Cardboard (OCC): <strong>₹9.80/kg</strong></div>
+            <div class="ticker-item">Cullet Glass: <strong>₹3.60/kg</strong></div>
+            <div class="ticker-item">Compost Biomass: <strong>₹4.20/kg</strong></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       TECHNOLOGY SECTION: FOUR CORE PILLARS
+  ------------------------------------------------------------- -->
+  <section class="section tech-section" id="technology">
+    <div class="container">
+      
+      <div class="section-header">
+        <span class="section-badge">
+          <span class="dot"></span>
+          Engineering Stack
+        </span>
+        <h2 class="section-title">Built on Robust Intelligent Technologies</h2>
+        <p class="section-subtitle">
+          Engineered for sub-second precision, lightweight deployment, and rigorous circular-economy monetization.
+        </p>
+      </div>
+
+      <!-- 4 Tech Cards -->
+      <div class="tech-cards-grid">
+        
+        <!-- Tech 1: MobileNetV2 -->
+        <div class="tech-card">
+          <div>
+            <div class="tech-icon-box">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                <rect x="9" y="9" width="6" height="6"></rect>
+                <line x1="9" y1="1" x2="9" y2="4"></line>
+                <line x1="15" y1="1" x2="15" y2="4"></line>
+                <line x1="9" y1="20" x2="9" y2="23"></line>
+                <line x1="15" y1="20" x2="15" y2="23"></line>
+                <line x1="20" y1="9" x2="23" y2="9"></line>
+                <line x1="20" y1="14" x2="23" y2="14"></line>
+                <line x1="1" y1="9" x2="4" y2="9"></line>
+                <line x1="1" y1="14" x2="4" y2="14"></line>
+              </svg>
+            </div>
+            <h3 class="tech-title">MobileNetV2</h3>
+            <div class="tech-subtitle">Real-time waste classification</div>
+            <p class="tech-description">
+              Inverted residual blocks with linear bottlenecks allow 3.4M parameters to achieve 95.8% multi-class accuracy with minimal memory footprint on edge microcontrollers.
+            </p>
+          </div>
+          <div class="tech-specs-pills">
+            <span class="tech-pill">Depthwise Convolutions</span>
+            <span class="tech-pill">Sub-50ms Inference</span>
+            <span class="tech-pill">3.4M Parameters</span>
+          </div>
+        </div>
+
+        <!-- Tech 2: OpenCV -->
+        <div class="tech-card">
+          <div>
+            <div class="tech-icon-box">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="m4.93 4.93 4.24 4.24"></path>
+                <path d="m14.83 9.17 4.24-4.24"></path>
+                <path d="m14.83 14.83 4.24 4.24"></path>
+                <path d="m9.17 14.83-4.24 4.24"></path>
+                <circle cx="12" cy="12" r="4"></circle>
+              </svg>
+            </div>
+            <h3 class="tech-title">OpenCV</h3>
+            <div class="tech-subtitle">Image enhancement & feature extraction</div>
+            <p class="tech-description">
+              Adaptive histogram equalization (CLAHE), Otsu thresholding, contour isolation, and background subtraction strip out conveyor belt noise and soiled backgrounds.
+            </p>
+          </div>
+          <div class="tech-specs-pills">
+            <span class="tech-pill">CLAHE Normalization</span>
+            <span class="tech-pill">ROI Segmentation</span>
+            <span class="tech-pill">Edge Detection</span>
+          </div>
+        </div>
+
+        <!-- Tech 3: TensorFlow -->
+        <div class="tech-card">
+          <div>
+            <div class="tech-icon-box">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+            </div>
+            <h3 class="tech-title">TensorFlow</h3>
+            <div class="tech-subtitle">Deep-learning model training & deployment</div>
+            <p class="tech-description">
+              Trained across 45,000 augmented Indian waste samples, quantized using TFLite Post-Training Quantization (INT8) to reduce model size by 75% without sacrificing recall.
+            </p>
+          </div>
+          <div class="tech-specs-pills">
+            <span class="tech-pill">TF Lite Quantization</span>
+            <span class="tech-pill">Transfer Learning</span>
+            <span class="tech-pill">Cross-Validation</span>
+          </div>
+        </div>
+
+        <!-- Tech 4: Circular Economy Framework -->
+        <div class="tech-card">
+          <div>
+            <div class="tech-icon-box">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+              </svg>
+            </div>
+            <h3 class="tech-title">Circular Economy</h3>
+            <div class="tech-subtitle">Recovery-value & recycling decision matrix</div>
+            <p class="tech-description">
+              Algorithmic scoring translating chemical purity, moisture index, and polymer density into actionable scrap revenue and Extended Producer Responsibility (EPR) credits.
+            </p>
+          </div>
+          <div class="tech-specs-pills">
+            <span class="tech-pill">EPR Credit Mapping</span>
+            <span class="tech-pill">Scrap Value Algorithm</span>
+            <span class="tech-pill">LCA Carbon Index</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       FUTURE INTEGRATION SECTION: EDGE AI & SMART CITY
+  ------------------------------------------------------------- -->
+  <section class="section future-section" id="future">
+    <div class="container">
+      
+      <div class="section-header">
+        <span class="section-badge">
+          <span class="dot"></span>
+          Next-Gen Architecture
+        </span>
+        <h2 class="section-title">Future Integration: Edge AI & Smart City Mesh</h2>
+        <p class="section-subtitle">
+          Scaling EcoSort AI from central MRF hubs into battery-operated smart bins and municipal LoRaWAN telemetry.
+        </p>
+      </div>
+
+      <div class="future-architecture-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <h3 style="font-size: 1.4rem;">Decentralized Autonomous Mesh</h3>
+          <span style="font-size: 0.78rem; font-weight: 700; color: var(--primary); background: var(--bg-tag); padding: 4px 12px; border-radius: var(--radius-full);">
+            Hardware Phase 3 Target
+          </span>
+        </div>
+
+        <!-- 5-Node Animated Pipeline -->
+        <div class="future-nodes-flow">
+          <div class="flow-connector-track"></div>
+          <div class="flow-packet-stream"></div>
+
+          <!-- Node 1 -->
+          <div class="future-node">
+            <div class="node-icon-circle">📷</div>
+            <h4 class="node-title">ESP32-CAM</h4>
+            <p class="node-desc">Low-power CMOS sensor inside smart bin lid with wake-on-motion radar trigger.</p>
+            <span class="node-chip">&lt; 150mW Idle</span>
+          </div>
+
+          <!-- Node 2 -->
+          <div class="future-node">
+            <div class="node-icon-circle">⚡</div>
+            <h4 class="node-title">TinyML Edge AI</h4>
+            <p class="node-desc">On-device 8-bit quantized neural weights run without cloud connectivity.</p>
+            <span class="node-chip">TensorFlow Lite Micro</span>
+          </div>
+
+          <!-- Node 3 -->
+          <div class="future-node">
+            <div class="node-icon-circle">🏷️</div>
+            <h4 class="node-title">Waste Classification</h4>
+            <p class="node-desc">Instantaneous sorting servo actuation diverts item into corresponding chamber.</p>
+            <span class="node-chip">Dual Micro-Servos</span>
+          </div>
+
+          <!-- Node 4 -->
+          <div class="future-node">
+            <div class="node-icon-circle">📡</div>
+            <h4 class="node-title">LoRa Connectivity</h4>
+            <p class="node-desc">Long-range 868MHz sub-GHz telemetry transmits bin fill level and scrap stats.</p>
+            <span class="node-chip">15 km Urban Range</span>
+          </div>
+
+          <!-- Node 5 -->
+          <div class="future-node">
+            <div class="node-icon-circle">🏙️</div>
+            <h4 class="node-title">Smart City Network</h4>
+            <p class="node-desc">Municipal GIS dashboard optimizes garbage truck routing, saving 35% fuel.</p>
+            <span class="node-chip">Dynamic Route Engine</span>
+          </div>
+        </div>
+
+        <!-- Meta Grid -->
+        <div class="future-meta-grid">
+          <div class="meta-box">
+            <div class="meta-box-title">Battery Longevity</div>
+            <div class="meta-box-val">18+ Months on 3.7V Li-Ion</div>
+          </div>
+          <div class="meta-box-title-box meta-box">
+            <div class="meta-box-title">Network Resilience</div>
+            <div class="meta-box-val">Zero Cellular SIM Dependencies</div>
+          </div>
+          <div class="meta-box">
+            <div class="meta-box-title">Municipal ROI</div>
+            <div class="meta-box-val">Break-even in 7.4 Months</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       HOW IT WORKS SECTION: 4 ANIMATED STEPS
+  ------------------------------------------------------------- -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      
+      <div class="section-header">
+        <span class="section-badge">
+          <span class="dot"></span>
+          User Flow
+        </span>
+        <h2 class="section-title">How It Works in 4 Steps</h2>
+        <p class="section-subtitle">
+          Frictionless workflow designed for zero human touchpoints from disposal to circular sale.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        
+        <!-- Step 1 -->
+        <div class="step-card">
+          <div class="step-index-badge">01</div>
+          <h3 class="step-title">Capture</h3>
+          <p class="step-desc">
+            Optical sensors or facility cameras capture high-resolution imagery as waste enters the intake chute.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+          <div class="step-index-badge">02</div>
+          <h3 class="step-title">Identify</h3>
+          <p class="step-desc">
+            Deep computer vision extracts shape, translucency, and texture features to identify substrate composition.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+          <div class="step-index-badge">03</div>
+          <h3 class="step-title">Analyse</h3>
+          <p class="step-desc">
+            System evaluates recyclability grade, detects cross-contamination, and looks up live scrap index pricing.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-card">
+          <div class="step-index-badge">04</div>
+          <h3 class="step-title">Recommend</h3>
+          <p class="step-desc">
+            AI commands mechanical diverters and dispatches verified recycling routes to circular supply partners.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       IMPACT SECTION: ENVIRONMENTAL, ECONOMIC, SOCIAL
+  ------------------------------------------------------------- -->
+  <section class="section impact-section" id="impact">
+    <div class="container">
+      
+      <div class="section-header">
+        <span class="section-badge">
+          <span class="dot"></span>
+          Measurable Transformation
+        </span>
+        <h2 class="section-title">Triple-Bottom-Line Impact</h2>
+        <p class="section-subtitle">
+          Quantifiable environmental preservation, urban municipal savings, and social upliftment.
+        </p>
+      </div>
+
+      <div class="impact-pillars-grid">
+        
+        <!-- Pillar 1: ENVIRONMENTAL -->
+        <div class="impact-pillar-card env">
+          <div>
+            <div class="pillar-header">
+              <div class="pillar-icon-box">🌱</div>
+              <h3 class="pillar-title">Environmental</h3>
+              <div class="pillar-tagline">Ecological Preservation</div>
+            </div>
+
+            <ul class="impact-points-list">
+              <li class="impact-point-item">
+                <span class="point-bullet">✓</span>
+                <span><strong>Less waste to landfills:</strong> Up to 79% diversion of clean recyclables and organic waste.</span>
+              </li>
+              <li class="impact-point-item">
+                <span class="point-bullet">✓</span>
+                <span><strong>Cleaner cities and campuses:</strong> Elimination of overflow dumping and open festering piles.</span>
+              </li>
+              <li class="impact-point-item">
+                <span class="point-bullet">✓</span>
+                <span><strong>Reduced carbon emissions:</strong> Prevents anaerobic methane fires and minimizes raw polymer mining.</span>
+              </li>
+              <li class="impact-point-item">
+                <span class="point-bullet">✓</span>
+                <span><strong>Higher recycling efficiency:</strong> Eliminates cross-contamination for Grade-A virgin polymer substitution.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pillar-counter-highlight">
+            <div>
+              <div class="pillar-counter-num">1,850 T</div>
+              <div style="font-size: 0.72rem; color: var(--text-light);">Per Unit / Year</div>
+            </div>
+            <div class="pillar-counter-desc">CO2e Greenhouse Emissions Abated</div>
+          </div>
+        </div>
+
+        <!-- Pillar 2: ECONOMIC -->
+        <div class="impact-pillar-card econ">
+          <div>
+            <div class="pillar-header">
+              <div class="pillar-icon-box">💰</div>
+              <h3 class="pillar-title">Economic</h3>
+              <div class="pillar-tagline">Resource Monetization</div>
+            </div>
+
+            <ul class="impact-points-list">
+              <li class="impact-point-item">
+                <span class="point-bullet">✓</span>
+                <span><strong>Higher resource recovery:</strong> Recovers high-grade aluminium, copper, PET, and clean corrugated fiber.</span>
+              </li>
+              <li class="impact-point-item">
+                <span class="point-bullet">✓</span>
+                <span><strong>Lower waste-management costs:</strong> 35% reduction in fuel, transfer vehicle wear, and tipping charges.</span>
+              </li>
+              <li class="impact-point-item">
+                <span class="point-bullet">✓</span>
+                <span><strong>Revenue from recyclables:</strong> Direct sale to registered recyclers yielding ₹18-25 Lakhs per facility.</span>
+              </li>
+              <li class="impact-point-item">
+                <span class="point-bullet">✓</span>
+                <span><strong>EPR Compliance Certificates:</strong> Helps FMCG brands meet Central Pollution Control Board targets.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pillar-counter-highlight">
+            <div>
+              <div class="pillar-counter-num">₹28.4 L</div>
+              <div style="font-size: 0.72rem; color: var(--text-light);">Per Facility / Year</div>
+            </div>
+            <div class="pillar-counter-desc">Net New Recyclable Scrap Revenue</div>
+          </div>
+        </div>
+
+        <!-- Pillar 3: SOCIAL -->
+        <div class="impact-pillar-card soc">
+          <div>
+            <div class="pillar-header">
+              <div class="pillar-icon-box">🤝</div>
+              <h3 class="pillar-title">Social</h3>
+              <div class="pillar-tagline">Dignity & Public Health</div>
+            </div>
+
+            <ul class="impact-points-list">
+              <li class="impact-point-item">
+                <span class="point-bullet">✓</span>
+                <span><strong>Improved public health:</strong> Drastic reduction in vector-borne diseases (dengue, cholera, malaria).</span>
+              </li>
+              <li class="impact-point-item">
+                <span class="point-bullet">✓</span>
+                <span><strong>Cleaner surroundings:</strong> Eliminates foul odor and airborne bio-aerosols from campuses and wards.</span>
+              </li>
+              <li class="impact-point-item">
+                <span class="point-bullet">✓</span>
+                <span><strong>Data-driven waste decisions:</strong> Municipal corporations gain transparent geo-spatial generation heatmaps.</span>
+              </li>
+              <li class="impact-point-item">
+                <span class="point-bullet">✓</span>
+                <span><strong>Dignified green employment:</strong> Elevates informal pickers into trained machine operators and supervisors.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pillar-counter-highlight">
+            <div>
+              <div class="pillar-counter-num">100%</div>
+              <div style="font-size: 0.72rem; color: var(--text-light);">Automated Sorter</div>
+            </div>
+            <div class="pillar-counter-desc">Elimination of Direct Manual Contact</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       ROADMAP SECTION: INTERACTIVE TIMELINE
+  ------------------------------------------------------------- -->
+  <section class="section roadmap-section" id="roadmap">
+    <div class="container">
+      
+      <div class="section-header">
+        <span class="section-badge">
+          <span class="dot"></span>
+          Strategic Trajectory
+        </span>
+        <h2 class="section-title">Development Roadmap</h2>
+        <p class="section-subtitle">
+          Our phased execution pathway from SIH 2026 prototype validation to nationwide Smart City rollout.
+        </p>
+      </div>
+
+      <div class="timeline-wrapper">
+        <div class="timeline-spine"></div>
+
+        <!-- Phase 1 -->
+        <div class="timeline-phase-row">
+          <div class="phase-node-marker"></div>
+          <div class="phase-content">
+            <span class="phase-status-tag status-completed">Completed</span>
+            <h3 class="phase-title">Phase 1 — AI Waste Classification</h3>
+            <p class="phase-desc">
+              Trained MobileNetV2 architecture with OpenCV image normalization across 45,000 multi-class Indian waste photographs achieving 95.8% validation accuracy.
+            </p>
+          </div>
+          <div class="phase-spacer"></div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="timeline-phase-row">
+          <div class="phase-node-marker"></div>
+          <div class="phase-content">
+            <span class="phase-status-tag status-active">Active Beta</span>
+            <h3 class="phase-title">Phase 2 — Recovery Intelligence</h3>
+            <p class="phase-desc">
+              Integrated real-time scrap market value estimation (₹/kg), carbon offset calculations, and automated circular-economy downstream dispatching algorithms.
+            </p>
+          </div>
+          <div class="phase-spacer"></div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="timeline-phase-row">
+          <div class="phase-node-marker"></div>
+          <div class="phase-content">
+            <span class="phase-status-tag status-progress">In Development</span>
+            <h3 class="phase-title">Phase 3 — Edge AI with ESP32-CAM</h3>
+            <p class="phase-desc">
+              Deploying quantized INT8 TinyML models on low-power microcontrollers with OV2640 camera modules for standalone edge inference in battery-operated bin lids.
+            </p>
+          </div>
+          <div class="phase-spacer"></div>
+        </div>
+
+        <!-- Phase 4 -->
+        <div class="timeline-phase-row">
+          <div class="phase-node-marker"></div>
+          <div class="phase-content">
+            <span class="phase-status-tag status-upcoming">Q4 2026 Target</span>
+            <h3 class="phase-title">Phase 4 — Smart Bin Integration</h3>
+            <p class="phase-desc">
+              Physical fabrication of automated sorting kiosks with dual-axis servo flappers, ultrasonic volume depth sensors, and solar recharging arrays.
+            </p>
+          </div>
+          <div class="phase-spacer"></div>
+        </div>
+
+        <!-- Phase 5 -->
+        <div class="timeline-phase-row">
+          <div class="phase-node-marker"></div>
+          <div class="phase-content">
+            <span class="phase-status-tag status-upcoming">2027 Vision</span>
+            <h3 class="phase-title">Phase 5 — LoRa Smart-City Network</h3>
+            <p class="phase-desc">
+              City-scale LoRaWAN mesh integration linking thousands of smart bins directly to municipal sanitation dispatch centers for dynamic route optimization.
+            </p>
+          </div>
+          <div class="phase-spacer"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       SECTION: TEAM & MENTORS (NEXTECH 007)
+  ------------------------------------------------------------- -->
+  <section class="section team-section" id="team">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">
+          <span class="dot"></span>
+          Team Roster & Mentors
+        </span>
+        <h2 class="section-title">
+          Meet <span class="gradient-text">NEXTECH 007</span> & Mentors
+        </h2>
+        <p class="section-subtitle">
+          Multidisciplinary engineering team from Rathinam Technical Campus bridging deep learning, edge AI microcontrollers, automated robotics, and circular-economy telemetry.
+        </p>
+      </div>
+
+      <!-- Exact 6 Team Members -->
+      <div class="team-grid">
+        <!-- 1. Aashika C.B -->
+        <div class="team-member-card">
+          <div class="member-avatar-row">
+            <div class="member-photo-frame">
+              <img src="assets/team/aashika.jpg" alt="Aashika C.B" class="member-photo" loading="lazy" />
+            </div>
+            <div class="member-meta">
+              <h4 class="member-name">Aashika C.B</h4>
+              <span class="member-role">Team Lead & Project Manager</span>
+              <span class="member-dept">Rathinam Technical Campus</span>
+            </div>
+          </div>
+          <p class="member-desc">
+            Directs project architecture, research methodology, hardware-software integration, presentation strategy, and SIH 2026 hackathon deliverables.
+          </p>
+        </div>
+
+        <!-- 2. Dhivyadharshini S -->
+        <div class="team-member-card">
+          <div class="member-avatar-row">
+            <div class="member-photo-frame">
+              <img src="assets/team/dhivyadharshini.jpg" alt="Dhivyadharshini S" class="member-photo" loading="lazy" />
+            </div>
+            <div class="member-meta">
+              <h4 class="member-name">Dhivyadharshini S</h4>
+              <span class="member-role">Edge AI & Embedded Systems Engineer</span>
+              <span class="member-dept">Rathinam Technical Campus</span>
+            </div>
+          </div>
+          <p class="member-desc">
+            Deploys quantized INT8 TinyML models on ESP32-CAM and low-power microcontrollers with OV2640 camera modules for standalone bin-lid edge inference.
+          </p>
+        </div>
+
+        <!-- 3. Gomathi C -->
+        <div class="team-member-card">
+          <div class="member-avatar-row">
+            <div class="member-photo-frame">
+              <img src="assets/team/gomathi.jpg" alt="Gomathi C" class="member-photo member-photo-gomathi" loading="lazy" />
+            </div>
+            <div class="member-meta">
+              <h4 class="member-name">Gomathi C</h4>
+              <span class="member-role">Hardware & Robotic Sorting Engineer</span>
+              <span class="member-dept">Rathinam Technical Campus</span>
+            </div>
+          </div>
+          <p class="member-desc">
+            Engineers physical sorting kiosks, conveyor mechanics, dual-axis servo actuation flappers, and optical sensor arrays for high-speed automated waste diversion.
+          </p>
+        </div>
+
+        <!-- 4. Kamalika R.M -->
+        <div class="team-member-card">
+          <div class="member-avatar-row">
+            <div class="member-photo-frame">
+              <img src="assets/team/kamalika.jpg" alt="Kamalika R.M" class="member-photo" loading="lazy" />
+            </div>
+            <div class="member-meta">
+              <h4 class="member-name">Kamalika R.M</h4>
+              <span class="member-role">Computer Vision & Deep Learning Engineer</span>
+              <span class="member-dept">Rathinam Technical Campus</span>
+            </div>
+          </div>
+          <p class="member-desc">
+            Designs and trains MobileNetV2 architecture with OpenCV normalization across 45,000+ waste images, optimizing mAP, classification confidence, and inference latency.
+          </p>
+        </div>
+
+        <!-- 5. Asher Sam Roshan S -->
+        <div class="team-member-card">
+          <div class="member-avatar-row">
+            <div class="member-photo-frame">
+              <img src="assets/team/asher.jpg" alt="Asher Sam Roshan S" class="member-photo" loading="lazy" />
+            </div>
+            <div class="member-meta">
+              <h4 class="member-name">Asher Sam Roshan S</h4>
+              <span class="member-role">Backend, Telemetry & Data Systems</span>
+              <span class="member-dept">Rathinam Technical Campus</span>
+            </div>
+          </div>
+          <p class="member-desc">
+            Develops FastAPI cloud services, real-time commodity scrap value indexers (₹/kg), carbon offset computation engines, and LoRa municipal telemetry pipelines.
+          </p>
+        </div>
+
+        <!-- 6. Raguram Rithish V -->
+        <div class="team-member-card">
+          <div class="member-avatar-row">
+            <div class="member-photo-frame">
+              <img src="assets/team/raguram.jpg" alt="Raguram Rithish V" class="member-photo" loading="lazy" />
+            </div>
+            <div class="member-meta">
+              <h4 class="member-name">Raguram Rithish V</h4>
+              <span class="member-role">Frontend, Dashboard & UX Engineer</span>
+              <span class="member-dept">Rathinam Technical Campus</span>
+            </div>
+          </div>
+          <p class="member-desc">
+            Builds high-performance responsive web interfaces, real-time conveyor canvas simulation, interactive AI classification studios, and circular-economy KPI charts.
+          </p>
+        </div>
+      </div>
+
+      <!-- Academic & Technical Mentors -->
+      <div class="mentors-wrapper">
+        <h3 class="mentors-section-title">Academic & Technical Mentors</h3>
+        <div class="mentors-grid">
+          <!-- Mentor 1: Mr. K. Muthusamy -->
+          <div class="mentor-card">
+            <div class="mentor-photo-frame">
+              <img src="assets/team/muthusamy.jpg" alt="Mr. K. Muthusamy" class="mentor-photo" loading="lazy" />
+            </div>
+            <div class="mentor-info">
+              <span class="mentor-tag">Project Mentor</span>
+              <h4 class="mentor-name">Mr. K. Muthusamy</h4>
+              <p class="mentor-designation">Technical Competitions Head</p>
+              <p class="mentor-institution">Rathinam Technical Campus</p>
+            </div>
+          </div>
+
+          <!-- Mentor 2: Er. Gajendran Parthasarathi -->
+          <div class="mentor-card">
+            <div class="mentor-photo-frame">
+              <img src="assets/team/gajendran.jpg" alt="Er. Gajendran Parthasarathi" class="mentor-photo" loading="lazy" />
+            </div>
+            <div class="mentor-info">
+              <span class="mentor-tag">Project Mentor</span>
+              <h4 class="mentor-name">Er. Gajendran Parthasarathi</h4>
+              <p class="mentor-designation">Head — School of Design and Innovation</p>
+              <p class="mentor-institution">Rathinam Technical Campus</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       FINAL CTA SECTION
+  ------------------------------------------------------------- -->
+  <section class="container" style="padding: 0 24px;">
+    <div class="cta-section">
+      <div class="cta-content">
+        <h2 class="cta-quote-title">
+          “Waste is not the end of a product’s life.<br>
+          It can be the beginning of another resource.”
+        </h2>
+        <p class="cta-subtitle">
+          Join NEXTECH 007 in transforming urban waste management into a data-driven circular economy engine. Built for Smart India Hackathon 2026.
+        </p>
+
+        <div class="cta-btn-group">
+          <a href="#ai-demo" class="btn btn-cta-light">
+            <span>Try AI Demo</span>
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+          <a href="#technology" class="btn btn-cta-outline">
+            <span>Explore Technology</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------
+       FOOTER
+  ------------------------------------------------------------- -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        
+        <div class="footer-brand-col">
+          <div class="brand-logo-icon" style="width: 36px; height: 36px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/>
+              <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/>
+              <path d="m14 16-3 3 3 3"/>
+              <path d="M8.294 4.542a1.78 1.78 0 0 1 1.55-.882h4.312a1.83 1.83 0 0 1 1.57.882l3.954 6.84"/>
+              <path d="m9.5 8-3-3 3-3"/>
+            </svg>
+          </div>
+          <div style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; margin-top: 8px;">
+            EcoSort AI
+          </div>
+          <p>
+            Autonomous waste classification, recovery intelligence and circular-economy decision support.
+          </p>
+          <div class="footer-badges-row">
+            <span class="footer-badge">Team: NEXTECH 007</span>
+            <span class="footer-badge">Rathinam Technical Campus</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Navigation</div>
+          <ul class="footer-nav-list">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#problem">Problem Analysis</a></li>
+            <li><a href="#solution">Interactive Solution</a></li>
+            <li><a href="#video-demo">Video Demonstration</a></li>
+            <li><a href="#ai-demo">AI Waste Demo</a></li>
+            <li><a href="#team">Team & Mentors</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Technology</div>
+          <ul class="footer-nav-list">
+            <li><a href="#technology">MobileNetV2 Edge</a></li>
+            <li><a href="#technology">OpenCV Preprocessing</a></li>
+            <li><a href="#technology">TensorFlow Quantization</a></li>
+            <li><a href="#future">ESP32-CAM TinyML</a></li>
+            <li><a href="#future">LoRa Mesh Network</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Impact & Vision</div>
+          <ul class="footer-nav-list">
+            <li><a href="#impact">Environmental Benefits</a></li>
+            <li><a href="#impact">Economic Recovery</a></li>
+            <li><a href="#impact">Social Upliftment</a></li>
+            <li><a href="#dashboard">Analytics Dashboard</a></li>
+            <li><a href="#roadmap">SIH 2026 Roadmap</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom-row">
+        <div>
+          © 2026 EcoSort AI. Developed by <strong>NEXTECH 007</strong> for Smart India Hackathon (SIH 2026).
+        </div>
+        <div class="footer-sys-status">
+          <span class="sys-dot-live"></span>
+          <span>Simulation Engine Active • Client-Side Pure Web Architecture</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- -------------------------------------------------------------
+       VANILLA JAVASCRIPT LOGIC
+       - All functionality self-contained
+       - Hero interactive sorting canvas simulation
+       - Video player with AI HUD toggle
+       - AI Demo image upload, drag-and-drop, presets, analysis animation, results
+       - Interactive charts (HTML5 Canvas pure rendering)
+       - Counter animations
+       - Active navbar scrolling & mobile drawer
+  ------------------------------------------------------------- -->
+  <script>
+    /* =============================================================
+       1. HERO SORTING VISUALIZER (HTML5 Canvas Simulation)
+       Renders conveyor belt with floating waste items, laser scanner,
+       and particles sorting into categories.
+    ============================================================= */
+    const canvas = document.getElementById('sortingCanvas');
+    const ctx = canvas.getContext('2d');
+    let canvasWidth = 0;
+    let canvasHeight = 0;
+
+    function resizeCanvas() {
+      const container = document.getElementById('canvasContainer');
+      if (!container) return;
+      canvasWidth = container.clientWidth;
+      canvasHeight = container.clientHeight;
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Waste Categories & Bins
+    const CATEGORIES = [
+      { name: 'Plastic', color: '#0284c7', icon: '🍾', countId: 'countPlastic' },
+      { name: 'Paper', color: '#d97706', icon: '📦', countId: 'countPaper' },
+      { name: 'Metal', color: '#64748b', icon: '🥫', countId: 'countMetal' },
+      { name: 'Glass', color: '#7c3aed', icon: '🫙', countId: 'countGlass' },
+      { name: 'Organic', color: '#059669', icon: '🍌', countId: 'countOrganic' }
+    ];
+
+    const sortCounts = {
+      Plastic: 142,
+      Paper: 98,
+      Metal: 64,
+      Glass: 39,
+      Organic: 185
+    };
+
+    class WasteItem {
+      constructor(categoryName, customX = -30) {
+        this.category = CATEGORIES.find(c => c.name === categoryName) || CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)];
+        this.x = customX;
+        this.y = canvasHeight * 0.45 + (Math.random() * 20 - 10);
+        this.vx = 2.2 + Math.random() * 0.8;
+        this.size = 28;
+        this.scanned = false;
+        this.sorted = false;
+        this.scanProgress = 0;
+        this.alpha = 1;
+        this.targetY = canvasHeight * 0.85;
+        this.targetX = 0;
+      }
+
+      update() {
+        if (!this.scanned) {
+          this.x += this.vx;
+          // Trigger scanner at center
+          const scannerX = canvasWidth * 0.48;
+          if (this.x >= scannerX - 10 && this.x <= scannerX + 30) {
+            this.scanned = true;
+            createScanFlash(this.x, this.y);
+            // Assign target bin X position
+            const catIndex = CATEGORIES.findIndex(c => c.name === this.category.name);
+            const slotWidth = canvasWidth / CATEGORIES.length;
+            this.targetX = slotWidth * (catIndex + 0.5);
+          }
+        } else if (!this.sorted) {
+          // Move toward bin target
+          const dx = this.targetX - this.x;
+          const dy = this.targetY - this.y;
+          this.x += dx * 0.08;
+          this.y += dy * 0.08;
+
+          if (Math.abs(dy) < 6) {
+            this.sorted = true;
+            sortCounts[this.category.name]++;
+            const el = document.getElementById(this.category.countId);
+            if (el) el.innerText = sortCounts[this.category.name];
+            createBinParticles(this.targetX, this.targetY, this.category.color);
+          }
+        } else {
+          // Fade out into bin
+          this.alpha -= 0.06;
+        }
+      }
+
+      draw() {
+        if (this.alpha <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+
+        // Draw object icon or shape
+        ctx.font = '24px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(this.category.icon, this.x, this.y);
+
+        // If scanned and en route, draw bounding tag
+        if (this.scanned && !this.sorted) {
+          ctx.strokeStyle = this.category.color;
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(this.x - 18, this.y - 18, 36, 36);
+
+          ctx.fillStyle = this.category.color;
+          ctx.font = '10px monospace';
+          ctx.fillText(this.category.name, this.x, this.y - 24);
+        }
+
+        ctx.restore();
+      }
+    }
+
+    const wasteItems = [];
+    const particles = [];
+    let lastSpawnTime = 0;
+
+    function createScanFlash(x, y) {
+      for (let i = 0; i < 12; i++) {
+        particles.push({
+          x, y,
+          vx: (Math.random() - 0.5) * 6,
+          vy: (Math.random() - 0.5) * 6,
+          radius: Math.random() * 3 + 1,
+          color: '#10b981',
+          life: 25
+        });
+      }
+    }
+
+    function createBinParticles(x, y, color) {
+      for (let i = 0; i < 8; i++) {
+        particles.push({
+          x, y,
+          vx: (Math.random() - 0.5) * 4,
+          vy: -Math.random() * 4 - 1,
+          radius: Math.random() * 2.5 + 1,
+          color: color,
+          life: 20
+        });
+      }
+    }
+
+    function spawnWasteItem(specificCategory) {
+      wasteItems.push(new WasteItem(specificCategory));
+    }
+
+    function triggerManualSort(category) {
+      spawnWasteItem(category);
+    }
+
+    // Animation Loop
+    function animateConveyor(time) {
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      // Draw Conveyor Track
+      const trackY = canvasHeight * 0.45;
+      ctx.strokeStyle = 'rgba(203, 213, 225, 0.6)';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(0, trackY + 18);
+      ctx.lineTo(canvasWidth * 0.5, trackY + 18);
+      ctx.stroke();
+
+      // Moving conveyor markings
+      const markerOffset = (time * 0.05) % 24;
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.4)';
+      for (let x = -markerOffset; x < canvasWidth * 0.5; x += 24) {
+        ctx.fillRect(x, trackY + 15, 6, 6);
+      }
+
+      // Scanner laser beam at center
+      const scannerX = canvasWidth * 0.48;
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(scannerX, trackY - 70);
+      ctx.lineTo(scannerX, trackY + 40);
+      ctx.stroke();
+
+      // Laser glow
+      const grad = ctx.createLinearGradient(scannerX - 25, 0, scannerX + 25, 0);
+      grad.addColorStop(0, 'rgba(16, 185, 129, 0)');
+      grad.addColorStop(0.5, 'rgba(16, 185, 129, 0.25)');
+      grad.addColorStop(1, 'rgba(16, 185, 129, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(scannerX - 25, trackY - 70, 50, 110);
+
+      // Scanner Head
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(scannerX - 16, trackY - 75, 32, 10);
+      ctx.fillStyle = '#34d399';
+      ctx.beginPath();
+      ctx.arc(scannerX, trackY - 70, 3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Spawn periodic waste
+      if (time - lastSpawnTime > 1800) {
+        wasteItems.push(new WasteItem());
+        lastSpawnTime = time;
+      }
+
+      // Update & Draw Waste Items
+      for (let i = wasteItems.length - 1; i >= 0; i--) {
+        const item = wasteItems[i];
+        item.update();
+        item.draw();
+        if (item.alpha <= 0) {
+          wasteItems.splice(i, 1);
+        }
+      }
+
+      // Update & Draw Particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life--;
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.life / 25;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        if (p.life <= 0) particles.splice(i, 1);
+      }
+
+      requestAnimationFrame(animateConveyor);
+    }
+    requestAnimationFrame(animateConveyor);
+
+    /* =============================================================
+       2. STATS COUNTER ANIMATION (Problem Section)
+       Animates numbers when scrolled into view.
+    ============================================================= */
+    const counterElements = document.querySelectorAll('.stat-value');
+    let countersStarted = false;
+
+    function startCounters() {
+      counterElements.forEach(el => {
+        const target = parseFloat(el.getAttribute('data-target'));
+        const prefix = el.getAttribute('data-prefix') || '';
+        const suffix = el.getAttribute('data-suffix') || '';
+        let current = 0;
+        const duration = 1800;
+        const stepTime = 25;
+        const steps = duration / stepTime;
+        const increment = target / steps;
+
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            current = target;
+            clearInterval(timer);
+          }
+          if (target > 1000) {
+            el.innerText = prefix + Math.floor(current).toLocaleString('en-IN') + suffix;
+          } else {
+            el.innerText = prefix + Math.floor(current) + suffix;
+          }
+        }, stepTime);
+      });
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !countersStarted) {
+          countersStarted = true;
+          startCounters();
+        }
+      });
+    }, { threshold: 0.2 });
+
+    const problemSection = document.getElementById('problem');
+    if (problemSection) statsObserver.observe(problemSection);
+
+    /* =============================================================
+       3. INTERACTIVE SOLUTION PIPELINE STAGES
+       Switch details when clicking any stage card.
+    ============================================================= */
+    const STAGE_DATA = {
+      1: {
+        title: "01. Waste Image Capture",
+        badge: "Sensor Ingestion",
+        desc: "A high-framerate optical camera with dynamic illumination captures overhead waste streams moving across chutes or conveyor belts. Auto-exposure compensation normalizes glare, shadows, and soiled backgrounds.",
+        spec1: "1080p @ 60 FPS / OV2640",
+        spec2: "< 8.2 ms Frame Ingest",
+        code: `# OpenCV Image Preprocessing Pipeline\nimport cv2, numpy as np\n\nframe = camera.capture_rgb()\nresized = cv2.resize(frame, (224, 224))\nnormalized = cv2.normalize(resized, None, 0, 1, cv2.NORM_MINMAX)\ntensor = np.expand_dims(normalized, axis=0)`
+      },
+      2: {
+        title: "02. AI Vision Preprocessing",
+        badge: "Edge Feature Isolation",
+        desc: "Adaptive histogram equalization (CLAHE) sharpens subtle packaging textures, and Otsu contour segmentation extracts bounding masks, separating the target material from belt reflections.",
+        spec1: "CLAHE + Gaussian Blur",
+        spec2: "99.1% Contour Recall",
+        code: `# Adaptive Thresholding & Contour BBox\ngray = cv2.cvtColor(resized, cv2.COLOR_RGB2GRAY)\nblurred = cv2.GaussianBlur(gray, (5, 5), 0)\n_, thresh = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)\ncontours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)\nroi = max(contours, key=cv2.contourArea)`
+      },
+      3: {
+        title: "03. Material Classification",
+        badge: "MobileNetV2 Inference",
+        desc: "Depthwise separable convolutions evaluate 5-class distribution across Plastic, Paper, Metal, Glass, and Organic with sub-45ms execution on edge tensor engines.",
+        spec1: "3.4M Parameters (INT8)",
+        spec2: "95.8% Multi-Class Accuracy",
+        code: `# TensorFlow Lite Edge Inference\ninterpreter = tf.lite.Interpreter(model_path="mobilenetv2_quant.tflite")\ninterpreter.allocate_tensors()\ninterpreter.set_tensor(input_details[0]['index'], tensor)\ninterpreter.invoke()\nprobabilities = interpreter.get_tensor(output_details[0]['index'])[0]\npredicted_class = CLASSES[np.argmax(probabilities)]`
+      },
+      4: {
+        title: "04. Recyclability Assessment",
+        badge: "Purity & Contamination Grade",
+        desc: "Neural texture analysis verifies surface contamination, polymer code markers (#1 to #7), and moisture index to assign standardized Grade-A through Grade-D recycling ratings.",
+        spec1: "Grade A to D Spectrum",
+        spec2: "< 3.5% Contamination Tolerance",
+        code: `# Circular Economy Index Engine\ndef calculate_recyclability(class_name, purity_score):\n    if class_name in ['PET', 'Aluminium', 'Cardboard'] and purity_score > 0.90:\n        return {'grade': 'Grade A', 'purity': purity_score, 'recyclable': True}\n    return {'grade': 'Grade C', 'purity': purity_score, 'recyclable': False}`
+      },
+      5: {
+        title: "05. Recovery Value Estimation",
+        badge: "Dynamic Market Pricing",
+        desc: "Inference outputs are mapped against live commodity scrap prices across Indian mandis and formal recyclers, calculating economic yield in ₹/kg in real-time.",
+        spec1: "Live Mandi API Sync",
+        spec2: "₹8 to ₹115 / kg Commodity Spread",
+        code: `# Commodity Monetization Index\nSCRAP_PRICES_INR = {'PET': 14.50, 'Aluminium': 112.0, 'OCC_Paper': 9.80, 'Glass': 3.60}\n\ndef estimate_recovery_value(material, weight_kg):\n    unit_rate = SCRAP_PRICES_INR.get(material, 0.0)\n    return round(unit_rate * weight_kg, 2)`
+      },
+      6: {
+        title: "06. Recycling Recommendation",
+        badge: "Automated Supply Routing",
+        desc: "The circular decision engine commands pneumatic diverter valves to route sorted waste into designated bales, generating verified Extended Producer Responsibility (EPR) logs.",
+        spec1: "Pneumatic Valve Actuation",
+        spec2: "Automated EPR Audit Ledger",
+        code: `# Actuator Command & Traceability\nif recovery['recyclable']:\n    actuator.fire_pneumatic_chute(target_bin=material.stream_id)\n    circular_ledger.log_transaction(material=material.name, value=recovery['value'])\n    dashboard.increment_diverted_tonnage(weight_kg)`
+      }
+    };
+
+    function activateStage(stageIndex) {
+      const cards = document.querySelectorAll('.stage-card');
+      cards.forEach((card, idx) => {
+        if (idx + 1 === stageIndex) card.classList.add('active');
+        else card.classList.remove('active');
+      });
+
+      const data = STAGE_DATA[stageIndex];
+      if (!data) return;
+
+      document.getElementById('panelStageTitle').innerHTML = `<span>${data.title}</span> <span class="stage-detail-badge">${data.badge}</span>`;
+      document.getElementById('panelStageDesc').innerText = data.desc;
+      document.getElementById('spec1Val').innerText = data.spec1;
+      document.getElementById('spec2Val').innerText = data.spec2;
+      document.getElementById('panelCodeBox').innerText = data.code;
+    }
+
+    /* =============================================================
+       4. VIDEO PLAYER CONTROLS & AI HUD OVERLAY
+    ============================================================= */
+    const video = document.getElementById('wasteSortingVideo');
+    const playBtn = document.getElementById('videoPlayBtn');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+    const muteBtn = document.getElementById('videoMuteBtn');
+    const soundOnIcon = document.getElementById('soundOnIcon');
+    const soundMuteIcon = document.getElementById('soundMuteIcon');
+    const progressBar = document.getElementById('videoProgressBar');
+    const progressWrapper = document.getElementById('videoProgressWrapper');
+    const currentTimeEl = document.getElementById('videoCurrentTime');
+    const durationEl = document.getElementById('videoDuration');
+    const visionOverlay = document.getElementById('videoVisionOverlay');
+
+    if (video) {
+      video.muted = true; // Auto-mute for browser autoplay policies
+
+      function togglePlay() {
+        if (video.paused || video.ended) {
+          video.play().then(() => {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
+          }).catch(err => {
+            console.log('Video playback error:', err);
+          });
+        } else {
+          video.pause();
+          playIcon.style.display = 'block';
+          pauseIcon.style.display = 'none';
+        }
+      }
+
+      playBtn.addEventListener('click', togglePlay);
+      video.addEventListener('click', togglePlay);
+
+      muteBtn.addEventListener('click', () => {
+        video.muted = !video.muted;
+        if (video.muted) {
+          soundOnIcon.style.display = 'none';
+          soundMuteIcon.style.display = 'block';
+        } else {
+          soundOnIcon.style.display = 'block';
+          soundMuteIcon.style.display = 'none';
+        }
+      });
+
+      video.addEventListener('timeupdate', () => {
+        if (video.duration) {
+          const pct = (video.currentTime / video.duration) * 100;
+          progressBar.style.width = pct + '%';
+
+          const curMins = Math.floor(video.currentTime / 60);
+          const curSecs = Math.floor(video.currentTime % 60);
+          const durMins = Math.floor(video.duration / 60);
+          const durSecs = Math.floor(video.duration % 60);
+          currentTimeEl.innerText = `${curMins < 10 ? '0' : ''}${curMins}:${curSecs < 10 ? '0' : ''}${curSecs}`;
+          durationEl.innerText = `${durMins < 10 ? '0' : ''}${durMins}:${durSecs < 10 ? '0' : ''}${durSecs}`;
+        }
+      });
+
+      progressWrapper.addEventListener('click', (e) => {
+        const rect = progressWrapper.getBoundingClientRect();
+        const pos = (e.clientX - rect.left) / rect.width;
+        if (video.duration) {
+          video.currentTime = pos * video.duration;
+        }
+      });
+
+      document.getElementById('videoFullscreenBtn').addEventListener('click', () => {
+        const container = document.getElementById('videoContainer');
+        if (!document.fullscreenElement) {
+          container.requestFullscreen().catch(err => console.log(err));
+        } else {
+          document.exitFullscreen();
+        }
+      });
+
+      // Animate AI HUD bounding box position dynamically
+      setInterval(() => {
+        const box = document.getElementById('videoBBox');
+        if (box && !video.paused) {
+          const jitterX = 33 + Math.sin(Date.now() * 0.002) * 4;
+          const jitterY = 26 + Math.cos(Date.now() * 0.002) * 5;
+          box.style.left = jitterX + '%';
+          box.style.top = jitterY + '%';
+        }
+      }, 100);
+    }
+
+    function toggleVideoMode(mode) {
+      const btnVision = document.getElementById('btnModeVision');
+      const btnRaw = document.getElementById('btnModeRaw');
+
+      if (mode === 'vision') {
+        btnVision.classList.add('active');
+        btnRaw.classList.remove('active');
+        visionOverlay.style.display = 'flex';
+      } else {
+        btnRaw.classList.add('active');
+        btnVision.classList.remove('active');
+        visionOverlay.style.display = 'none';
+      }
+    }
+
+    /* =============================================================
+       5. AI DEMO: PRESETS, UPLOAD & PROTOTYPE INFERENCE
+    ============================================================= */
+    const PRESET_DATA = {
+      plastic: {
+        name: "Plastic Water Bottle",
+        category: "PET #1 (Polyethylene Terephthalate)",
+        confidence: "96.4%",
+        recyclability: "High (Grade A)",
+        recoveryValue: "₹14.50 / kg",
+        stream: "Dry Recyclable / Rigid Plastic",
+        carbon: "1.42 kg CO2e / kg",
+        action: "Send to specialized PET flake processing & mechanical recycling stream. Direct feed for bottle-to-bottle pelletization and polyester spun-yarn.",
+        svgIcon: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230f172a"/><path d="M42 15 h16 v8 h-16 z M40 23 h20 l6 12 v48 l-6 4 h-20 l-6 -4 v-48 z" fill="%2338bdf8" opacity="0.9"/><rect x="44" y="44" width="12" height="20" fill="%23ffffff" opacity="0.8"/></svg>`
+      },
+      can: {
+        name: "Aluminium Beverage Can",
+        category: "Al-3004 Non-Ferrous Metal",
+        confidence: "98.2%",
+        recyclability: "High (Grade A+)",
+        recoveryValue: "₹112.00 / kg",
+        stream: "Dry Recyclable / Non-Ferrous Metal",
+        carbon: "8.95 kg CO2e / kg",
+        action: "Direct to eddy-current sorting and remelting foundry. Can be repeatedly recycled infinitely with only 5% energy of virgin bauxite smelting.",
+        svgIcon: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230f172a"/><ellipse cx="50" cy="25" rx="18" ry="6" fill="%2394a3b8"/><rect x="32" y="25" width="36" height="50" fill="%23cbd5e1"/><ellipse cx="50" cy="75" rx="18" ry="6" fill="%2364748b"/></svg>`
+      },
+      organic: {
+        name: "Banana Peel / Food Waste",
+        category: "Biodegradable Organic Biomass",
+        confidence: "94.8%",
+        recyclability: "Organic Composting Stream",
+        recoveryValue: "₹4.20 / kg (Soil Nutrient)",
+        stream: "Wet Waste / Anaerobic Digestible",
+        carbon: "0.85 kg CO2e / kg",
+        action: "Route to automated aerobic in-vessel composter or anaerobic bio-methanation digester. High nitrogen-potassium organic fertilizer yield.",
+        svgIcon: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230f172a"/><path d="M30 65 Q45 25 70 30 Q55 50 45 75 Z" fill="%23fbbf24"/><path d="M45 75 Q35 70 30 65" fill="%2378350f"/></svg>`
+      },
+      cardboard: {
+        name: "Corrugated Cardboard Box",
+        category: "Kraft Paper Fiber (OCC)",
+        confidence: "95.1%",
+        recyclability: "High (Grade A)",
+        recoveryValue: "₹9.80 / kg",
+        stream: "Dry Recyclable / Paper Fiber",
+        carbon: "1.15 kg CO2e / kg",
+        action: "Bale and dispatch to pulp paper mills. Ensure no grease or food contamination for hydrapulping virgin packaging board.",
+        svgIcon: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230f172a"/><polygon points="50,20 80,35 80,68 50,85 20,68 20,35" fill="%23d97706"/><line x1="50" y1="20" x2="50" y2="85" stroke="%2392400e" stroke-width="2"/><line x1="50" y1="52" x2="80" y2="35" stroke="%2392400e" stroke-width="2"/><line x1="50" y1="52" x2="20" y2="35" stroke="%2392400e" stroke-width="2"/></svg>`
+      },
+      glass: {
+        name: "Glass Beverage Jar",
+        category: "Silica Glass (Cullet)",
+        confidence: "97.5%",
+        recyclability: "High (100% Circular)",
+        recoveryValue: "₹3.60 / kg",
+        stream: "Dry Recyclable / Inert Cullet",
+        carbon: "0.45 kg CO2e / kg",
+        action: "Send to color-sorted glass crushing line. Cullet lowers furnace melt temperature by 300°C in container glass plants.",
+        svgIcon: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230f172a"/><path d="M40 20 h20 v8 h-20 z M35 28 h30 l5 15 v40 l-5 5 h-30 l-5 -5 v-40 z" fill="%23a78bfa" opacity="0.85"/></svg>`
+      },
+      ewaste: {
+        name: "E-Waste Copper Cable",
+        category: "High-Grade Electrical Wire",
+        confidence: "93.7%",
+        recyclability: "Specialized WEEE Stream",
+        recoveryValue: "₹340.00 / kg (Cu Core)",
+        stream: "Hazardous / Specialized Recovery",
+        carbon: "4.50 kg CO2e / kg",
+        action: "Send to mechanical granulator to separate PVC jacket from 99.9% pure electrolytic copper wire scrap. Prevents open burning.",
+        svgIcon: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230f172a"/><path d="M20 50 Q40 20 60 50 T100 50" fill="none" stroke="%23f97316" stroke-width="8"/><path d="M20 50 Q40 20 60 50 T100 50" fill="none" stroke="%23e2e8f0" stroke-width="2"/></svg>`
+      }
+    };
+
+    let activePreset = 'plastic';
+    const previewImg = document.getElementById('previewImg');
+
+    function loadPreset(key) {
+      activePreset = key;
+      const buttons = document.querySelectorAll('.preset-btn');
+      buttons.forEach(b => b.classList.remove('active'));
+      const activeBtn = (typeof event !== 'undefined' && event && event.currentTarget) ? event.currentTarget : null;
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+      } else {
+        const presetKeys = ['plastic', 'can', 'organic', 'cardboard', 'glass', 'ewaste'];
+        const idx = presetKeys.indexOf(key);
+        if (idx !== -1 && buttons[idx]) buttons[idx].classList.add('active');
+      }
+
+      const data = PRESET_DATA[key];
+      if (data && previewImg) {
+        previewImg.src = data.svgIcon;
+        applyResultData(data);
+      }
+    }
+
+    // Initialize with plastic bottle preset
+    loadPreset('plastic');
+
+    function applyResultData(data) {
+      document.getElementById('resMaterial').innerText = data.name;
+      document.getElementById('resConfidence').innerText = data.confidence;
+      document.getElementById('resRecyclability').innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> ${data.recyclability}`;
+      document.getElementById('resRecoveryVal').innerText = data.recoveryValue;
+      document.getElementById('resCategory').innerText = data.stream;
+      document.getElementById('resCarbon').innerText = data.carbon;
+      document.getElementById('resAction').innerText = data.action;
+    }
+
+    // File Upload Handling
+    const fileInput = document.getElementById('fileInput');
+    const dropzone = document.getElementById('dropzone');
+
+    if (fileInput) {
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          handleFile(e.target.files[0]);
+        }
+      });
+    }
+
+    if (dropzone) {
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          dropzone.classList.add('dragover');
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          dropzone.classList.remove('dragover');
+        }, false);
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        if (files && files[0]) {
+          handleFile(files[0]);
+        }
+      });
+    }
+
+    function handleFile(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewImg.src = e.target.result;
+        // Trigger automated analysis
+        runAIAnalysis(true);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Run AI Analysis Animation Simulation
+    function runAIAnalysis(isCustomUpload = false) {
+      const laser = document.getElementById('laserLine');
+      const hudBox = document.getElementById('hudBox');
+      const analyzingState = document.getElementById('analyzingState');
+      const resultContainer = document.getElementById('resultContainer');
+      const statusBadge = document.getElementById('statusBadge');
+      const stepText = document.getElementById('analysisStepText');
+      const subText = document.getElementById('analysisSubText');
+
+      // Start scan effects
+      laser.classList.add('scanning');
+      hudBox.classList.add('visible');
+      analyzingState.style.display = 'flex';
+      resultContainer.style.display = 'none';
+
+      statusBadge.innerHTML = `<span class="dot" style="width: 6px; height: 6px; background: #06b6d4; border-radius: 50%;"></span> Inferencing Tensor...`;
+
+      // Step progression
+      setTimeout(() => {
+        stepText.innerText = "Computing Inverted Residual Activations...";
+        subText.innerText = "[Conv2D_64 • ReLu6 • Depthwise Separable Filter]";
+      }, 500);
+
+      setTimeout(() => {
+        stepText.innerText = "Evaluating Purity & Material Boundaries...";
+        subText.innerText = "[Softmax Probability: 0.964 • Cross-entropy: 0.042]";
+      }, 1100);
+
+      setTimeout(() => {
+        stepText.innerText = "Querying Circular Scrap Monetization Index...";
+        subText.innerText = "[Commodity Rate: Live CPCB Benchmark Sync]";
+      }, 1600);
+
+      setTimeout(() => {
+        laser.classList.remove('scanning');
+        hudBox.classList.remove('visible');
+        analyzingState.style.display = 'none';
+        resultContainer.style.display = 'flex';
+
+        statusBadge.innerHTML = `<span class="dot" style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></span> MobileNetV2 Ready`;
+
+        if (!isCustomUpload) {
+          applyResultData(PRESET_DATA[activePreset]);
+        } else {
+          // Dynamic result for custom user-uploaded file
+          const customResult = {
+            name: "Rigid Recyclable Material (Detected)",
+            category: "Polymer / Composite Mix",
+            confidence: (92.5 + Math.random() * 5).toFixed(1) + "%",
+            recyclability: "High (Grade A-)",
+            recoveryValue: "₹12.80 / kg",
+            stream: "Mixed Dry Recyclables",
+            carbon: "1.65 kg CO2e / kg",
+            action: "Identified clean rigid structure. Recommended for optical flapper sorting and pelletizing."
+          };
+          applyResultData(customResult);
+        }
+      }, 2100);
+    }
+
+    function resetDemo() {
+      loadPreset('plastic');
+      document.getElementById('laserLine').classList.remove('scanning');
+      document.getElementById('hudBox').classList.remove('visible');
+      document.getElementById('analyzingState').style.display = 'none';
+      document.getElementById('resultContainer').style.display = 'flex';
+    }
+
+    /* =============================================================
+       6. DASHBOARD CHARTS (HTML5 Canvas Pure Implementation)
+       - Category Donut Chart
+       - Hourly Throughput Bar Chart
+    ============================================================= */
+    const donutCanvas = document.getElementById('categoryDonutChart');
+    const barCanvas = document.getElementById('throughputBarChart');
+
+    const DASH_DATA = {
+      today: {
+        total: "18,450",
+        recyclable: "84.8%",
+        value: "₹2,48,500",
+        landfill: "79.4%",
+        categories: [
+          { name: 'Plastic', val: 36, color: '#0284c7' },
+          { name: 'Organic', val: 28, color: '#059669' },
+          { name: 'Paper', val: 18, color: '#d97706' },
+          { name: 'Metal', val: 12, color: '#64748b' },
+          { name: 'Glass', val: 6, color: '#7c3aed' }
+        ],
+        hourly: [210, 340, 480, 890, 1420, 1150, 980, 1260, 1020, 750, 480, 310]
+      },
+      week: {
+        total: "1,24,600",
+        recyclable: "86.2%",
+        value: "₹16,84,000",
+        landfill: "81.2%",
+        categories: [
+          { name: 'Plastic', val: 38, color: '#0284c7' },
+          { name: 'Organic', val: 26, color: '#059669' },
+          { name: 'Paper', val: 19, color: '#d97706' },
+          { name: 'Metal', val: 11, color: '#64748b' },
+          { name: 'Glass', val: 6, color: '#7c3aed' }
+        ],
+        hourly: [1800, 2200, 3100, 4200, 3900, 2900, 1950, 2800, 3400, 2100, 1400, 950]
+      },
+      month: {
+        total: "5,32,000",
+        recyclable: "85.4%",
+        value: "₹71,45,000",
+        landfill: "80.5%",
+        categories: [
+          { name: 'Plastic', val: 35, color: '#0284c7' },
+          { name: 'Organic', val: 30, color: '#059669' },
+          { name: 'Paper', val: 17, color: '#d97706' },
+          { name: 'Metal', val: 12, color: '#64748b' },
+          { name: 'Glass', val: 6, color: '#7c3aed' }
+        ],
+        hourly: [7500, 8900, 11200, 14200, 12500, 9800, 8200, 11500, 13800, 9400, 6800, 4500]
+      },
+      all: {
+        total: "3.4M",
+        recyclable: "87.1%",
+        value: "₹4.62 Cr",
+        landfill: "82.8%",
+        categories: [
+          { name: 'Plastic', val: 37, color: '#0284c7' },
+          { name: 'Organic', val: 27, color: '#059669' },
+          { name: 'Paper', val: 18, color: '#d97706' },
+          { name: 'Metal', val: 12, color: '#64748b' },
+          { name: 'Glass', val: 6, color: '#7c3aed' }
+        ],
+        hourly: [24000, 32000, 45000, 58000, 51000, 38000, 31000, 44000, 52000, 36000, 28000, 19000]
+      }
+    };
+
+    let currentDashPeriod = 'today';
+
+    function switchDashboardTimeframe(period) {
+      currentDashPeriod = period;
+      const buttons = document.querySelectorAll('.timeframe-btn');
+      buttons.forEach(b => b.classList.remove('active'));
+      const activeBtn = (typeof event !== 'undefined' && event && event.currentTarget) ? event.currentTarget : null;
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+      } else {
+        const periodKeys = ['today', 'week', 'month', 'all'];
+        const idx = periodKeys.indexOf(period);
+        if (idx !== -1 && buttons[idx]) buttons[idx].classList.add('active');
+      }
+
+      const data = DASH_DATA[period];
+      if (!data) return;
+
+      document.getElementById('kpiTotal').innerHTML = `${data.total} <span style="font-size: 1rem; font-weight: 600;">kg</span>`;
+      document.getElementById('kpiRecyclable').innerText = data.recyclable;
+      document.getElementById('kpiValue').innerText = data.value;
+      document.getElementById('kpiLandfill').innerText = data.landfill;
+
+      renderDonutChart(data.categories);
+      renderBarChart(data.hourly);
+    }
+
+    function renderDonutChart(categories) {
+      if (!donutCanvas) return;
+      const dCtx = donutCanvas.getContext('2d');
+      const w = donutCanvas.clientWidth;
+      const h = donutCanvas.clientHeight;
+      donutCanvas.width = w;
+      donutCanvas.height = h;
+
+      dCtx.clearRect(0, 0, w, h);
+
+      const centerX = w * 0.38;
+      const centerY = h * 0.5;
+      const radius = Math.min(centerX, centerY) * 0.78;
+      const innerRadius = radius * 0.58;
+
+      let startAngle = -Math.PI / 2;
+      const totalVal = categories.reduce((sum, c) => sum + c.val, 0);
+
+      categories.forEach(cat => {
+        const sliceAngle = (cat.val / totalVal) * (Math.PI * 2);
+        dCtx.beginPath();
+        dCtx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+        dCtx.arc(centerX, centerY, innerRadius, startAngle + sliceAngle, startAngle, true);
+        dCtx.closePath();
+        dCtx.fillStyle = cat.color;
+        dCtx.fill();
+        startAngle += sliceAngle;
+      });
+
+      // Center Text
+      dCtx.fillStyle = '#0f172a';
+      dCtx.font = 'bold 16px "Plus Jakarta Sans", sans-serif';
+      dCtx.textAlign = 'center';
+      dCtx.textBaseline = 'middle';
+      dCtx.fillText('100%', centerX, centerY - 8);
+      dCtx.font = '11px sans-serif';
+      dCtx.fillStyle = '#64748b';
+      dCtx.fillText('Sorted', centerX, centerY + 12);
+
+      // Legend on Right
+      const legendX = w * 0.72;
+      let legendY = h * 0.2;
+      categories.forEach(cat => {
+        dCtx.fillStyle = cat.color;
+        dCtx.beginPath();
+        dCtx.arc(legendX, legendY, 5, 0, Math.PI * 2);
+        dCtx.fill();
+
+        dCtx.fillStyle = '#0f172a';
+        dCtx.font = '12px "Plus Jakarta Sans", sans-serif';
+        dCtx.textAlign = 'left';
+        dCtx.fillText(`${cat.name} (${cat.val}%)`, legendX + 12, legendY + 4);
+        legendY += 28;
+      });
+    }
+
+    function renderBarChart(hourlyData) {
+      if (!barCanvas) return;
+      const bCtx = barCanvas.getContext('2d');
+      const w = barCanvas.clientWidth;
+      const h = barCanvas.clientHeight;
+      barCanvas.width = w;
+      barCanvas.height = h;
+
+      bCtx.clearRect(0, 0, w, h);
+
+      const paddingLeft = 40;
+      const paddingBottom = 30;
+      const chartW = w - paddingLeft - 20;
+      const chartH = h - paddingBottom - 20;
+
+      const maxVal = Math.max(...hourlyData) * 1.15;
+      const barWidth = (chartW / hourlyData.length) * 0.65;
+      const gap = (chartW / hourlyData.length) * 0.35;
+
+      const labels = ['06h', '07h', '08h', '09h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h'];
+
+      // Horizontal grid lines
+      bCtx.strokeStyle = 'rgba(226, 232, 240, 0.8)';
+      bCtx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = 20 + (chartH / 4) * i;
+        bCtx.beginPath();
+        bCtx.moveTo(paddingLeft, y);
+        bCtx.lineTo(w - 20, y);
+        bCtx.stroke();
+      }
+
+      // Draw Bars
+      hourlyData.forEach((val, i) => {
+        const barH = (val / maxVal) * chartH;
+        const x = paddingLeft + i * (barWidth + gap) + gap / 2;
+        const y = h - paddingBottom - barH;
+
+        // Rounded top bar
+        const grad = bCtx.createLinearGradient(0, y, 0, y + barH);
+        grad.addColorStop(0, '#10b981');
+        grad.addColorStop(1, '#06b6d4');
+        bCtx.fillStyle = grad;
+
+        bCtx.beginPath();
+        bCtx.roundRect(x, y, barWidth, barH, [4, 4, 0, 0]);
+        bCtx.fill();
+
+        // Label
+        bCtx.fillStyle = '#64748b';
+        bCtx.font = '10px monospace';
+        bCtx.textAlign = 'center';
+        bCtx.fillText(labels[i] || '', x + barWidth / 2, h - 10);
+      });
+    }
+
+    // Initialize Dashboard Charts
+    setTimeout(() => {
+      switchDashboardTimeframe('today');
+    }, 400);
+
+    /* =============================================================
+       7. ACTIVE NAVBAR HIGHLIGHTING & MOBILE DRAWER
+    ============================================================= */
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.pageYOffset;
+      const navbar = document.getElementById('mainNavbar');
+
+      if (scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+
+      sections.forEach(current => {
+        const sectionHeight = current.offsetHeight;
+        const sectionTop = current.offsetTop - 120;
+        const sectionId = current.getAttribute('id');
+
+        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + sectionId) {
+              link.classList.add('active');
+            }
+          });
+          mobileLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + sectionId) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    });
+
+    if (mobileMenuBtn && mobileDrawer) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileDrawer.classList.toggle('open');
+      });
+
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileDrawer.classList.remove('open');
+        });
+      });
+    }
+  </script>
+</body>
+</html>
