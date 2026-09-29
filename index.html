@@ -5721,6 +5721,18 @@ tensor = np.expand_dims(normalized, axis=0)
         });
       });
     }
+
+    // Resilient image fallback for team and mentor portraits
+    document.querySelectorAll('.member-photo, .mentor-photo').forEach(img => {
+      img.addEventListener('error', function() {
+        const rawName = this.src.split('/').pop().split('?')[0];
+        if (this.src.includes('assets/team/')) {
+          this.src = rawName;
+        } else {
+          this.src = 'assets/team/' + rawName;
+        }
+      }, { once: true });
+    });
   </script>
 </body>
 </html>
