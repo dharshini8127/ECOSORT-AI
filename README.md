@@ -14,8 +14,10 @@ EcoSort AI is an AI-powered waste classification, recovery intelligence, and cir
 ---
 
 ## 🚀 Live Demo & Deployment
-Hosted on **GitHub Pages**:
-🔗 **[https://dharshini8127.github.io/portfolio/](https://dharshini8127.github.io/portfolio/)**
+- **Render Deployment**: 🔗 **[https://ecosort-ai.onrender.com](https://ecosort-ai.onrender.com)**
+- **GitHub Pages**: 🔗 **[https://dharshini8127.github.io/ECOSORT-AI/](https://dharshini8127.github.io/ECOSORT-AI/)**
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/dharshini8127/ECOSORT-AI)
 
 ---
 
